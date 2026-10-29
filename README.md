@@ -59,7 +59,7 @@ effects are recovered by the analysis.
 | Path | Contents |
 |---|---|
 | `StudentPerformance.pbip`, `*.Report`, `*.SemanticModel` | Power BI project (PBIP: TMDL model and PBIR report) |
-| `data/student_exam_performance.csv` | seed file the generator starts from |
+| `data/student_exam_performance.csv` | seed file the generator starts from (not in the repository, see [Data source](#data-source-and-licence)) |
 | `data/model/` | generated star-schema CSVs loaded by the model |
 | `data/truth/` | built-in effects, programme effect estimates and the validation report (not loaded into the model) |
 | `scripts/build_dataset.py`, `generator_config.json`, `validate_dataset.py` | data generator, its parameters and the validation report |
@@ -68,6 +68,9 @@ effects are recovered by the analysis.
 | `docs/DATA_MODEL.md` | full data model, KPI catalogue and assumptions |
 
 ## Rebuild from scratch
+
+Download the seed file from Kaggle (see [Data source](#data-source-and-licence)) and save it as
+`data/student_exam_performance.csv`, then:
 
 ```bash
 py -3.13 scripts/build_dataset.py data/student_exam_performance.csv data/model data/truth
@@ -93,3 +96,12 @@ All data is synthetic. The generator starts from a flat seed file and builds eve
 (schools, teachers, classes, enrolments, exams, daily attendance, assignments, LMS activity, surveys,
 incidents, support programmes) with calibrated distributions and built-in effects. School, teacher and
 student records are fictional.
+
+## Data source and licence
+
+The seed file is the
+[Student Exam Performance & Academic Success Dataset](https://www.kaggle.com/datasets/mobeenfatimah/student-exam-performance-and-success-dataset)
+by Mobeen Fatima, licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
+It is used only as a starting point: the generator recalibrates its distributions and regenerates
+every table, so the data in this project differs from the original. The generated data, including
+`data/truth/`, is shared under the same licence.

@@ -1,6 +1,7 @@
 # Student Performance Analytics — Data Model
 
-The project starts from a flat seed file: 100,000 rows, 44 columns, one row per student. A table like
+The project starts from a flat seed file ([source and licence](../README.md#data-source-and-licence)):
+100,000 rows, 44 columns, one row per student. A table like
 that is fine for exploration but looks nothing like the data of a real student information system
 (SIS/LMS). Here it is turned into a star schema: 9 dimensions and 8 fact tables joined by surrogate
 keys, with every operational table generated synthetically.

@@ -2,6 +2,9 @@
 **/.pbi/localSettings.json
 **/.pbi/cache.abf
 
+# Seed file: download from Kaggle (see README, Data source)
+data/student_exam_performance.csv
+
 # Generated model data: rebuild with scripts/build_dataset.py
 data/model/
 data/ds.zip
