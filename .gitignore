@@ -1,0 +1,15 @@
+# Power BI Desktop local state (recreated on open)
+**/.pbi/localSettings.json
+**/.pbi/cache.abf
+
+# Generated model data: rebuild with scripts/build_dataset.py
+data/model/
+data/ds.zip
+
+# Working screenshots; the README uses shots/v2
+shots/*
+!shots/v2/
+
+# Python
+__pycache__/
+*.pyc

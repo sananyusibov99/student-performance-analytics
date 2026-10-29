@@ -1,0 +1,47 @@
+/// Source: data\model\dim_subject.csv
+table Subject
+	lineageTag: 89e4ed73-4014-468f-ab9c-7df6996cd714
+
+	column subject_key
+		dataType: int64
+		isHidden
+		isKey
+		lineageTag: 9ce470da-8eb5-408a-9e25-07160ff78dfb
+		summarizeBy: none
+		sourceColumn: subject_key
+
+	column subject_name
+		dataType: string
+		lineageTag: 8b9cd7bd-8f92-468d-9e53-bce6c8a9ec09
+		sourceColumn: subject_name
+
+	column department
+		dataType: string
+		lineageTag: 6b98d1f7-5513-4ca1-9f37-1c7554c12060
+		sourceColumn: department
+
+	column credits
+		dataType: int64
+		lineageTag: e0b12af4-ff1f-4385-9e28-c70d293eaff0
+		summarizeBy: none
+		sourceColumn: credits
+
+	column is_core
+		dataType: boolean
+		lineageTag: 83f15ee8-a6e5-4318-aaa4-35bf0f5ed588
+		sourceColumn: is_core
+
+	partition Subject = m
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "dim_subject.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    Blanks = Table.ReplaceValue(Promoted, "", null, Replacer.ReplaceValue, Table.ColumnNames(Promoted)),
+				    Typed = Table.TransformColumnTypes(Blanks, {{"subject_key", Int64.Type}, {"subject_name", type text}, {"department", type text}, {"credits", Int64.Type}, {"is_core", type logical}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

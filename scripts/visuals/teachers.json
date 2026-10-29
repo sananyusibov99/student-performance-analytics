@@ -1,0 +1,9 @@
+[
+ {"visual_type":"card","name":"card_gpa","x":20,"y":128,"width":235,"height":104,"title":"GPA","fields":{"Values":"Metrics.GPA"}},
+ {"visual_type":"card","name":"card_credits","x":271,"y":128,"width":235,"height":104,"title":"Credit Completion","fields":{"Values":"Metrics.Credit Completion"}},
+ {"visual_type":"card","name":"card_withdraw","x":522,"y":128,"width":235,"height":104,"title":"Course Withdrawal Rate","fields":{"Values":"Metrics.Course Withdrawal Rate"}},
+ {"visual_type":"card","name":"card_spt","x":773,"y":128,"width":235,"height":104,"title":"Students per Teacher","fields":{"Values":"Metrics.Students per Teacher"}},
+ {"visual_type":"card","name":"card_classsize","x":1024,"y":128,"width":236,"height":104,"title":"Avg Class Size","fields":{"Values":"Metrics.Avg Class Size"}},
+ {"visual_type":"barChart","name":"gpa_by_subject","x":20,"y":248,"width":402,"height":452,"title":"GPA by subject","fields":{"Category":"Subject.subject_name","Y":"Metrics.GPA"}},
+ {"visual_type":"tableEx","name":"teacher_value_added_table","x":438,"y":248,"width":822,"height":452,"title":"Teacher value added (growth vs subject average)","fields":{"Values":["Teacher.teacher_name","Subject.subject_name","Teacher.years_experience","Metrics.Avg Course Score","Metrics.Avg Course Growth","Metrics.Teacher Value Added"]}}
+]

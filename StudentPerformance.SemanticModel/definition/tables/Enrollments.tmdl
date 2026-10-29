@@ -1,0 +1,103 @@
+/// Source: data\model\fact_enrollment.csv
+table Enrollments
+	lineageTag: cc48bccf-5273-4784-81a0-44f25e833483
+
+	column enrollment_key
+		dataType: int64
+		isHidden
+		isKey
+		lineageTag: 782e7605-01c6-48ff-b8b0-2ec2bdc84650
+		summarizeBy: none
+		sourceColumn: enrollment_key
+
+	column student_key
+		dataType: int64
+		isHidden
+		lineageTag: 4a1c08d5-ae51-45c9-8a4c-7213f7c3f5c8
+		summarizeBy: none
+		sourceColumn: student_key
+
+	column class_key
+		dataType: int64
+		isHidden
+		lineageTag: 24dc57ad-0843-42fc-b84b-9a5a3f4cbadc
+		summarizeBy: none
+		sourceColumn: class_key
+
+	column term_key
+		dataType: int64
+		isHidden
+		lineageTag: bf22de28-4a8e-4dea-be29-3d3825517304
+		summarizeBy: none
+		sourceColumn: term_key
+
+	column enroll_date_key
+		dataType: int64
+		isHidden
+		lineageTag: 59578926-9c63-4ca2-b47c-c1481e622c27
+		summarizeBy: none
+		sourceColumn: enroll_date_key
+
+	column status
+		dataType: string
+		lineageTag: 36463ca1-e98a-4956-a83c-2dc45c7aca98
+		sourceColumn: status
+
+	column withdraw_date_key
+		dataType: int64
+		isHidden
+		lineageTag: 49ae1cca-226f-49cb-ae99-f8a47bc96f9c
+		summarizeBy: none
+		sourceColumn: withdraw_date_key
+
+	column final_score
+		dataType: double
+		lineageTag: 68598e4a-9559-41a0-ac23-cecb22e2215c
+		summarizeBy: none
+		sourceColumn: final_score
+
+	column final_grade
+		dataType: string
+		lineageTag: b476c581-9c6d-43b0-9491-d1737a4ea183
+		sourceColumn: final_grade
+
+	column grade_points
+		dataType: double
+		lineageTag: e4e234ba-8e5e-49df-ae11-5fc0377425c4
+		summarizeBy: none
+		sourceColumn: grade_points
+
+	column credits_attempted
+		dataType: int64
+		lineageTag: 5e2364de-f10e-4b05-8513-164e7f803c5d
+		summarizeBy: none
+		sourceColumn: credits_attempted
+
+	column credits_earned
+		dataType: int64
+		lineageTag: 0cc95194-f033-4945-9d6a-11b61757cc04
+		summarizeBy: none
+		sourceColumn: credits_earned
+
+	column 'Prior Subject Score' = CALCULATE ( AVERAGE ( 'Exam Results'[score] ), REMOVEFILTERS ( 'Term' ), 'Exam'[exam_type] = "Final", 'Exam'[term_key] = MIN ( 'Term'[term_key] ) )
+		dataType: double
+		lineageTag: c08f7a3e-e836-4a4a-bf69-fe3078caaf64
+
+	column 'Course Growth' = IF ( NOT ISBLANK ( 'Enrollments'[final_score] ) && NOT ISBLANK ( 'Enrollments'[Prior Subject Score] ), 'Enrollments'[final_score] - 'Enrollments'[Prior Subject Score] )
+		dataType: double
+		lineageTag: 2131bfe5-291f-4f9a-bf4c-ee05852ee956
+
+	partition Enrollments = m
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "fact_enrollment.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    Blanks = Table.ReplaceValue(Promoted, "", null, Replacer.ReplaceValue, Table.ColumnNames(Promoted)),
+				    Typed = Table.TransformColumnTypes(Blanks, {{"enrollment_key", Int64.Type}, {"student_key", Int64.Type}, {"class_key", Int64.Type}, {"term_key", Int64.Type}, {"enroll_date_key", Int64.Type}, {"status", type text}, {"withdraw_date_key", Int64.Type}, {"final_score", type number}, {"final_grade", type text}, {"grade_points", type number}, {"credits_attempted", Int64.Type}, {"credits_earned", Int64.Type}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

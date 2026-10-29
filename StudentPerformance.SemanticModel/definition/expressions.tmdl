@@ -1,0 +1,6 @@
+/// Folder with the star-schema CSV files (data\model)
+expression DataFolder = "C:\StudentExamPBI\data\model\" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 2f5d51b6-b161-4d0c-87e6-eebe6baa8e2e
+
+	annotation PBI_ResultType = Text
+

@@ -1,0 +1,9 @@
+[
+ {"visual_type":"card","name":"card_atrisk_n","x":20,"y":128,"width":235,"height":104,"title":"At-Risk Students","fields":{"Values":"Metrics.At-Risk Students"}},
+ {"visual_type":"card","name":"card_atrisk","x":271,"y":128,"width":235,"height":104,"title":"At-Risk Rate","fields":{"Values":"Metrics.At-Risk Rate"}},
+ {"visual_type":"card","name":"card_highrisk","x":522,"y":128,"width":235,"height":104,"title":"High-Risk Rate","fields":{"Values":"Metrics.High-Risk Rate"}},
+ {"visual_type":"card","name":"card_flag_a","x":773,"y":128,"width":235,"height":104,"title":"Attendance Flag Rate","fields":{"Values":"Metrics.Attendance Flag Rate"}},
+ {"visual_type":"card","name":"card_flag_c","x":1024,"y":128,"width":236,"height":104,"title":"Course Flag Rate","fields":{"Values":"Metrics.Course Flag Rate"}},
+ {"visual_type":"barChart","name":"at_risk_by_school","x":20,"y":248,"width":402,"height":452,"title":"At-risk rate by school","fields":{"Category":"School.school_name","Y":"Metrics.At-Risk Rate"}},
+ {"visual_type":"tableEx","name":"at_risk_students_table","x":438,"y":248,"width":822,"height":452,"title":"Students to review first (most ABC flags)","fields":{"Values":["Student.student_id","Student.grade_level","School.school_name","Metrics.Attendance Rate","Metrics.Incidents","Metrics.Avg Exam Score","Metrics.GPA","Metrics.Risk Flags"]}}
+]

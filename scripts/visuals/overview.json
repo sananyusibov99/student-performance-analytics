@@ -1,0 +1,13 @@
+[
+ {"visual_type":"slicer","name":"slicer_education","x":616,"y":20,"width":204,"height":64,"title":"Education level","fields":{"Values":"Students.education_level"}},
+ {"visual_type":"slicer","name":"slicer_school","x":836,"y":20,"width":204,"height":64,"title":"School type","fields":{"Values":"Students.school_type"}},
+ {"visual_type":"slicer","name":"slicer_gender","x":1056,"y":20,"width":204,"height":64,"title":"Gender","fields":{"Values":"Students.gender"}},
+ {"visual_type":"card","name":"card_students","x":20,"y":128,"width":235,"height":104,"title":"Students","fields":{"Values":"Metrics.Students"}},
+ {"visual_type":"card","name":"card_avg_score","x":271,"y":128,"width":235,"height":104,"title":"Avg exam score","fields":{"Values":"Metrics.Avg Exam Score"}},
+ {"visual_type":"card","name":"card_pass_rate","x":522,"y":128,"width":235,"height":104,"title":"Pass rate","fields":{"Values":"Metrics.Pass Rate"}},
+ {"visual_type":"card","name":"card_top_grade","x":773,"y":128,"width":235,"height":104,"title":"Grade A share","fields":{"Values":"Metrics.Top Grade Rate"}},
+ {"visual_type":"card","name":"card_score_change","x":1024,"y":128,"width":236,"height":104,"title":"Change vs previous exam","fields":{"Values":"Metrics.Score Change"}},
+ {"visual_type":"columnChart","name":"score_distribution_column","x":20,"y":248,"width":610,"height":452,"title":"How exam scores are distributed","fields":{"Category":"Students.Exam Score Band","Y":"Metrics.Students"}},
+ {"visual_type":"barChart","name":"students_by_grade_bar","x":646,"y":248,"width":297,"height":452,"title":"Students by grade","fields":{"Category":"Students.performance_grade","Y":"Metrics.Students"}},
+ {"visual_type":"barChart","name":"pass_rate_by_income_bar","x":959,"y":248,"width":301,"height":452,"title":"Pass rate by family income","fields":{"Category":"Students.family_income","Y":"Metrics.Pass Rate"}}
+]

@@ -1,0 +1,152 @@
+/// Source: data\model\dim_student.csv
+table Student
+	lineageTag: f45fa0e3-ed54-491a-9b68-4966bb4e3b76
+
+	column student_key
+		dataType: int64
+		isHidden
+		isKey
+		lineageTag: 00cd389d-869e-406c-97b9-afafbfb26be5
+		summarizeBy: none
+		sourceColumn: student_key
+
+	column student_id
+		dataType: string
+		lineageTag: 26c566a5-668c-4363-acfb-ea8edcd2349d
+		sourceColumn: student_id
+
+	column school_key
+		dataType: int64
+		isHidden
+		lineageTag: f7d4f7cf-a5da-44aa-8503-ec2bf458d04d
+		summarizeBy: none
+		sourceColumn: school_key
+
+	column gender
+		dataType: string
+		lineageTag: 8325d679-e474-4f8b-9194-5fbe2a85ab66
+		sourceColumn: gender
+
+	column birth_date
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 13455447-9404-4c08-ab9a-8f3399589121
+		summarizeBy: none
+		sourceColumn: birth_date
+
+	column education_level
+		dataType: string
+		lineageTag: 9b89bce8-15c2-44ae-8d8f-dd6a62785042
+		sourceColumn: education_level
+
+	column grade_level
+		dataType: string
+		lineageTag: 112e2502-8491-46c6-9e31-3cd019e59204
+		sourceColumn: grade_level
+
+	column cohort_year
+		dataType: int64
+		lineageTag: d518a8b0-1bb3-4143-a644-1aa11c71a32b
+		summarizeBy: none
+		sourceColumn: cohort_year
+
+	column enrollment_date
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 92c50bc1-7d8b-44ad-a11d-363175b4fbd3
+		summarizeBy: none
+		sourceColumn: enrollment_date
+
+	column family_income
+		dataType: string
+		lineageTag: 3d6b71d7-f2cb-4f61-abaa-6da78f13bf0a
+		sourceColumn: family_income
+		sortByColumn: 'family_income Order'
+
+	column parent_education
+		dataType: string
+		lineageTag: 2fa955bd-6366-4311-8cc7-2a156f772a99
+		sourceColumn: parent_education
+		sortByColumn: 'parent_education Order'
+
+	column internet_access
+		dataType: int64
+		lineageTag: d3e0de1b-770c-407f-b7d1-48a2cd683af1
+		summarizeBy: none
+		sourceColumn: internet_access
+
+	column device_availability
+		dataType: string
+		lineageTag: aa084ae9-7d62-4424-937a-16459e36d676
+		sourceColumn: device_availability
+
+	column scholarship_flag
+		dataType: int64
+		lineageTag: 46cf1ef7-e722-4a72-88e8-5a28ad90da20
+		summarizeBy: none
+		sourceColumn: scholarship_flag
+
+	column special_needs_flag
+		dataType: int64
+		lineageTag: 28f77159-90c1-4793-9c75-515e31f10276
+		summarizeBy: none
+		sourceColumn: special_needs_flag
+
+	column commute_km
+		dataType: double
+		lineageTag: 08aff4bc-baa5-4b5a-a6ce-3bfbb1128a2a
+		summarizeBy: none
+		sourceColumn: commute_km
+
+	column entry_gpa
+		dataType: double
+		lineageTag: c6710e9f-70a8-457b-b90a-c6806e3e2f1f
+		summarizeBy: none
+		sourceColumn: entry_gpa
+
+	column 'family_income Order'
+		dataType: int64
+		isHidden
+		lineageTag: d46c8a61-47d7-40cb-80c9-b67f2881f8ee
+		summarizeBy: none
+		sourceColumn: family_income Order
+
+	column 'parent_education Order'
+		dataType: int64
+		isHidden
+		lineageTag: d25ea94e-52e8-4369-a36b-d5ac188339a5
+		summarizeBy: none
+		sourceColumn: parent_education Order
+
+	column 'Prior Final Score' = CALCULATE ( AVERAGE ( 'Exam Results'[score] ), 'Exam'[exam_type] = "Final", 'Exam'[term_key] = MIN ( 'Term'[term_key] ), REMOVEFILTERS ( 'Term' ) )
+		dataType: double
+		lineageTag: f5d88229-565e-4881-9146-15f2ccdc693c
+
+	column 'Prior Score Band' = SWITCH ( TRUE (), ISBLANK ( 'Student'[Prior Final Score] ), BLANK (), 'Student'[Prior Final Score] < 50, "< 50", 'Student'[Prior Final Score] < 60, "50-59", 'Student'[Prior Final Score] < 70, "60-69", 'Student'[Prior Final Score] < 80, "70-79", 'Student'[Prior Final Score] < 90, "80-89", "90+" )
+		dataType: string
+		displayFolder: Bands
+		lineageTag: 82d5d92f-3063-4315-b54c-33db4d1220b9
+		sortByColumn: 'Prior Score Band Order'
+
+	column 'Prior Score Band Order' = SWITCH ( TRUE (), ISBLANK ( 'Student'[Prior Final Score] ), BLANK (), 'Student'[Prior Final Score] < 50, 1, 'Student'[Prior Final Score] < 60, 2, 'Student'[Prior Final Score] < 70, 3, 'Student'[Prior Final Score] < 80, 4, 'Student'[Prior Final Score] < 90, 5, 6 )
+		dataType: int64
+		isHidden
+		displayFolder: Bands
+		lineageTag: 746fe99a-b3f5-4e2c-9c14-d338954d8bc6
+
+	partition Student = m
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "dim_student.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    Blanks = Table.ReplaceValue(Promoted, "", null, Replacer.ReplaceValue, Table.ColumnNames(Promoted)),
+				    Typed = Table.TransformColumnTypes(Blanks, {{"student_key", Int64.Type}, {"student_id", type text}, {"school_key", Int64.Type}, {"gender", type text}, {"birth_date", type date}, {"education_level", type text}, {"grade_level", type text}, {"cohort_year", Int64.Type}, {"enrollment_date", type date}, {"family_income", type text}, {"parent_education", type text}, {"internet_access", Int64.Type}, {"device_availability", type text}, {"scholarship_flag", Int64.Type}, {"special_needs_flag", Int64.Type}, {"commute_km", type number}, {"entry_gpa", type number}}, "en-US"),
+				    Ord1 = Table.AddColumn(Typed, "family_income Order", each List.PositionOf({"Low", "Lower-Middle", "Middle", "Upper-Middle", "High"}, [family_income]) + 1, Int64.Type),
+				    Ord2 = Table.AddColumn(Ord1, "parent_education Order", each List.PositionOf({"High School", "Associate", "Bachelor", "Master", "Doctorate", "Not specified"}, [parent_education]) + 1, Int64.Type)
+				in
+				    Ord2
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

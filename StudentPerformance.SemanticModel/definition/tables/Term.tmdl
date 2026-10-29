@@ -1,0 +1,62 @@
+/// Source: data\model\dim_term.csv
+table Term
+	lineageTag: 002c9dbe-dc1a-41f8-8258-066f7eb9be61
+
+	column term_key
+		dataType: int64
+		isHidden
+		isKey
+		lineageTag: 0a12612d-7593-4cbf-b9bb-7c958e8544fd
+		summarizeBy: none
+		sourceColumn: term_key
+
+	column academic_year
+		dataType: string
+		lineageTag: f0efeba4-90c7-4c7b-a12b-79ec38fe5042
+		sourceColumn: academic_year
+
+	column Term
+		dataType: string
+		lineageTag: 05a2395f-ad02-4d26-a310-18bcc567500b
+		sourceColumn: term_name
+		sortByColumn: term_key
+
+	column start_date
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 2669a996-3d31-44c2-b9ff-9d5805113c3d
+		summarizeBy: none
+		sourceColumn: start_date
+
+	column end_date
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 550a9acc-a70b-4aa6-ab55-58caed7880f3
+		summarizeBy: none
+		sourceColumn: end_date
+
+	column instructional_days
+		dataType: int64
+		lineageTag: 98c61e5a-fd1d-43c3-924b-aaae55004385
+		summarizeBy: none
+		sourceColumn: instructional_days
+
+	column is_current_year
+		dataType: boolean
+		lineageTag: 455ca979-f309-464a-be87-af209151c6f6
+		sourceColumn: is_current_year
+
+	partition Term = m
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "dim_term.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    Blanks = Table.ReplaceValue(Promoted, "", null, Replacer.ReplaceValue, Table.ColumnNames(Promoted)),
+				    Typed = Table.TransformColumnTypes(Blanks, {{"term_key", Int64.Type}, {"academic_year", type text}, {"term_name", type text}, {"start_date", type date}, {"end_date", type date}, {"instructional_days", Int64.Type}, {"is_current_year", type logical}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

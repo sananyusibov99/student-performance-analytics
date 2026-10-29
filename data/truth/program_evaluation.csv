@@ -1,0 +1,5 @@
+program,participants,naive_gap,design_estimate,ci_low,ci_high,true_effect,method
+Private tuition,6019,3.2,3.26,2.82,3.7,3.0,ANCOVA: spring final adjusted for prior-year score
+Remedial class,1678,-2.89,3.62,2.75,4.49,4.0,Regression discontinuity at the fall average cut-off (50)
+Peer mentoring,1205,1.21,1.47,1.16,1.78,1.5,ANCOVA: spring final adjusted for fall final and prior score
+Counseling,913,0.04,2.09,0.89,3.28,1.0,ANCOVA within the high-stress group (stress 9-10)

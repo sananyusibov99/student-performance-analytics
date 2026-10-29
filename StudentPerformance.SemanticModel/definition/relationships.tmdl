@@ -1,0 +1,96 @@
+relationship Date_term_key
+	fromColumn: Date.term_key
+	toColumn: Term.term_key
+
+relationship Student_school_key
+	fromColumn: Student.school_key
+	toColumn: School.school_key
+
+relationship Class_subject_key
+	fromColumn: Class.subject_key
+	toColumn: Subject.subject_key
+
+relationship Class_term_key
+	fromColumn: Class.term_key
+	toColumn: Term.term_key
+
+relationship Class_teacher_key
+	fromColumn: Class.teacher_key
+	toColumn: Teacher.teacher_key
+
+relationship Exam_subject_key
+	fromColumn: Exam.subject_key
+	toColumn: Subject.subject_key
+
+relationship Exam_term_key
+	fromColumn: Exam.term_key
+	toColumn: Term.term_key
+
+relationship Assignment_class_key
+	fromColumn: Assignment.class_key
+	toColumn: Class.class_key
+
+relationship Enrollments_student_key
+	fromColumn: Enrollments.student_key
+	toColumn: Student.student_key
+
+relationship Enrollments_class_key
+	fromColumn: Enrollments.class_key
+	toColumn: Class.class_key
+
+relationship 'Exam Results_student_key'
+	fromColumn: 'Exam Results'.student_key
+	toColumn: Student.student_key
+
+relationship 'Exam Results_exam_key'
+	fromColumn: 'Exam Results'.exam_key
+	toColumn: Exam.exam_key
+
+relationship Attendance_student_key
+	fromColumn: Attendance.student_key
+	toColumn: Student.student_key
+
+relationship Attendance_date_key
+	fromColumn: Attendance.date_key
+	toColumn: Date.date_key
+
+relationship Submissions_student_key
+	fromColumn: Submissions.student_key
+	toColumn: Student.student_key
+
+relationship Submissions_assignment_key
+	fromColumn: Submissions.assignment_key
+	toColumn: Assignment.assignment_key
+
+relationship 'LMS Activity_student_key'
+	fromColumn: 'LMS Activity'.student_key
+	toColumn: Student.student_key
+
+relationship 'LMS Activity_week_start_date_key'
+	fromColumn: 'LMS Activity'.week_start_date_key
+	toColumn: Date.date_key
+
+relationship 'Wellbeing Survey_student_key'
+	fromColumn: 'Wellbeing Survey'.student_key
+	toColumn: Student.student_key
+
+relationship 'Wellbeing Survey_term_key'
+	fromColumn: 'Wellbeing Survey'.term_key
+	toColumn: Term.term_key
+
+relationship Incidents_student_key
+	fromColumn: Incidents.student_key
+	toColumn: Student.student_key
+
+relationship Incidents_date_key
+	fromColumn: Incidents.date_key
+	toColumn: Date.date_key
+
+relationship Interventions_student_key
+	fromColumn: Interventions.student_key
+	toColumn: Student.student_key
+
+relationship Interventions_start_date_key
+	fromColumn: Interventions.start_date_key
+	toColumn: Date.date_key
+

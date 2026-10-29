@@ -1,0 +1,192 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "at_risk_students_table",
+  "position": {
+    "x": 438,
+    "y": 248,
+    "z": 0,
+    "height": 452,
+    "width": 822,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Student"
+                    }
+                  },
+                  "Property": "student_id"
+                }
+              },
+              "queryRef": "Student.student_id",
+              "nativeQueryRef": "student_id",
+              "displayName": "Student ID"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Student"
+                    }
+                  },
+                  "Property": "grade_level"
+                }
+              },
+              "queryRef": "Student.grade_level",
+              "nativeQueryRef": "grade_level",
+              "displayName": "Grade"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "School"
+                    }
+                  },
+                  "Property": "school_name"
+                }
+              },
+              "queryRef": "School.school_name",
+              "nativeQueryRef": "school_name",
+              "displayName": "School"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Metrics"
+                    }
+                  },
+                  "Property": "Attendance Rate"
+                }
+              },
+              "queryRef": "Metrics.Attendance Rate",
+              "nativeQueryRef": "Attendance Rate"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Metrics"
+                    }
+                  },
+                  "Property": "Incidents"
+                }
+              },
+              "queryRef": "Metrics.Incidents",
+              "nativeQueryRef": "Incidents"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Metrics"
+                    }
+                  },
+                  "Property": "Avg Exam Score"
+                }
+              },
+              "queryRef": "Metrics.Avg Exam Score",
+              "nativeQueryRef": "Avg Exam Score"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Metrics"
+                    }
+                  },
+                  "Property": "GPA"
+                }
+              },
+              "queryRef": "Metrics.GPA",
+              "nativeQueryRef": "GPA"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Metrics"
+                    }
+                  },
+                  "Property": "Risk Flags"
+                }
+              },
+              "queryRef": "Metrics.Risk Flags",
+              "nativeQueryRef": "Risk Flags"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Metrics"
+                  }
+                },
+                "Property": "Risk Flags"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Students to review first (most ABC flags)'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

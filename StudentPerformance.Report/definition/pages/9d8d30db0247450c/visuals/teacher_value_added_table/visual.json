@@ -1,0 +1,252 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "teacher_value_added_table",
+  "position": {
+    "x": 438,
+    "y": 248,
+    "z": 0,
+    "height": 452,
+    "width": 822,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Teacher"
+                    }
+                  },
+                  "Property": "teacher_name"
+                }
+              },
+              "queryRef": "Teacher.teacher_name",
+              "nativeQueryRef": "teacher_name",
+              "displayName": "Teacher"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Subject"
+                    }
+                  },
+                  "Property": "subject_name"
+                }
+              },
+              "queryRef": "Subject.subject_name",
+              "nativeQueryRef": "subject_name",
+              "displayName": "Subject"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Teacher"
+                    }
+                  },
+                  "Property": "years_experience"
+                }
+              },
+              "queryRef": "Teacher.years_experience",
+              "nativeQueryRef": "years_experience",
+              "displayName": "Experience (yrs)"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Metrics"
+                    }
+                  },
+                  "Property": "Avg Course Score"
+                }
+              },
+              "queryRef": "Metrics.Avg Course Score",
+              "nativeQueryRef": "Avg Course Score"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Metrics"
+                    }
+                  },
+                  "Property": "Avg Course Growth"
+                }
+              },
+              "queryRef": "Metrics.Avg Course Growth",
+              "nativeQueryRef": "Avg Course Growth"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Metrics"
+                    }
+                  },
+                  "Property": "Teacher Value Added"
+                }
+              },
+              "queryRef": "Metrics.Teacher Value Added",
+              "nativeQueryRef": "Teacher Value Added"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Metrics"
+                  }
+                },
+                "Property": "Teacher Value Added"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Teacher value added (growth vs subject average)'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "5fd2ff87ee7d59e20088",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Teacher"
+              }
+            },
+            "Property": "teacher_name"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "910cddd34a31c9062162",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Subject"
+              }
+            },
+            "Property": "subject_name"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "33c2408120d8b80d90a2",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Teacher"
+              }
+            },
+            "Property": "years_experience"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "3199aaac2c07ecb9da5e",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Metrics"
+              }
+            },
+            "Property": "Avg Course Score"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "eb84fd92e0bbaced7bbb",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Metrics"
+              }
+            },
+            "Property": "Avg Course Growth"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "d412667a34a6e2482978",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Metrics"
+              }
+            },
+            "Property": "Teacher Value Added"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

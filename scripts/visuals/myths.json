@@ -1,0 +1,7 @@
+[
+ {"visual_type":"columnChart","name":"myth_study_method","x":20,"y":128,"width":402,"height":270,"title":"Myth: the study method matters","fields":{"Category":"Students.study_method","Y":"Metrics.Avg Exam Score"}},
+ {"visual_type":"columnChart","name":"myth_motivation","x":438,"y":128,"width":402,"height":270,"title":"Myth: motivation level matters","fields":{"Category":"Students.motivation_level","Y":"Metrics.Avg Exam Score"}},
+ {"visual_type":"columnChart","name":"myth_parent_education","x":856,"y":128,"width":404,"height":270,"title":"Myth: parents' education matters","fields":{"Category":"Students.parent_education","Y":"Metrics.Avg Exam Score"}},
+ {"visual_type":"pivotTable","name":"pass_rate_income_school_matrix","x":20,"y":414,"width":610,"height":286,"title":"Fact: family income matters (pass rate by income and school)","fields":{"Rows":"Students.family_income","Columns":"Students.school_type","Values":"Metrics.Pass Rate"}},
+ {"visual_type":"columnChart","name":"fact_sleep_quality_vs_hours","x":646,"y":414,"width":614,"height":286,"title":"Sleep quality doesn't matter, sleep hours do","fields":{"Category":"Students.sleep_quality","Y":"Metrics.Avg Exam Score"}}
+]

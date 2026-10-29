@@ -1,0 +1,123 @@
+/// Source: data\model\fact_exam_result.csv
+table 'Exam Results'
+	lineageTag: e30b5eb6-d135-469a-8ecf-107b051b8a72
+
+	column exam_result_key
+		dataType: int64
+		isHidden
+		lineageTag: 8001170f-eb76-4fad-b803-274d0ad3ffae
+		summarizeBy: none
+		sourceColumn: exam_result_key
+
+	column student_key
+		dataType: int64
+		isHidden
+		lineageTag: c010059b-eecc-4d3f-b1f5-152bdcefedae
+		summarizeBy: none
+		sourceColumn: student_key
+
+	column exam_key
+		dataType: int64
+		isHidden
+		lineageTag: e96fc01c-30c9-4f36-94c1-a3d2c3f345e8
+		summarizeBy: none
+		sourceColumn: exam_key
+
+	column class_key
+		dataType: int64
+		isHidden
+		lineageTag: 83bf21d9-34bb-4678-bebc-ba67c3d27e0d
+		summarizeBy: none
+		sourceColumn: class_key
+
+	column date_key
+		dataType: int64
+		isHidden
+		lineageTag: 6c99b5d7-8036-4e6e-b786-a3983c6439a0
+		summarizeBy: none
+		sourceColumn: date_key
+
+	column attendance_status
+		dataType: string
+		lineageTag: 2d134ebc-7bba-494c-ae00-03cd5c3a6e19
+		sourceColumn: attendance_status
+
+	column score
+		dataType: double
+		lineageTag: 05b8ff1b-b0b4-4fb7-8516-0dca7bcf2a04
+		summarizeBy: none
+		sourceColumn: score
+
+	column questions_attempted
+		dataType: int64
+		lineageTag: 05eb18d9-a3b2-4228-a2f4-1efbe545e597
+		summarizeBy: none
+		sourceColumn: questions_attempted
+
+	column questions_correct
+		dataType: int64
+		lineageTag: 08c24323-dbcf-4a01-a5d5-33e37487f4b1
+		summarizeBy: none
+		sourceColumn: questions_correct
+
+	column time_spent_min
+		dataType: int64
+		lineageTag: 6e21d240-ca9a-4ef6-9eec-6467b08fd504
+		summarizeBy: none
+		sourceColumn: time_spent_min
+
+	column preparation_days
+		dataType: int64
+		lineageTag: 12ab380e-513a-49a2-bacb-f2f06bcf6356
+		summarizeBy: none
+		sourceColumn: preparation_days
+
+	column exam_anxiety_level
+		dataType: double
+		lineageTag: d4bfed2e-63a9-489f-a354-a27fbac49464
+		summarizeBy: none
+		sourceColumn: exam_anxiety_level
+
+	column time_management_score
+		dataType: double
+		lineageTag: 58f01991-ddfa-424a-99c7-329d720caea5
+		summarizeBy: none
+		sourceColumn: time_management_score
+
+	column grade_letter
+		dataType: string
+		lineageTag: d52cf674-3699-4592-a913-f86c33efdc17
+		sourceColumn: grade_letter
+
+	column is_pass
+		dataType: int64
+		lineageTag: 0da73dc9-bba1-409a-914a-6474545d3094
+		summarizeBy: none
+		sourceColumn: is_pass
+
+	column 'Score Band' = SWITCH ( TRUE (), ISBLANK ( 'Exam Results'[score] ), BLANK (), 'Exam Results'[score] < 10, "0-9", 'Exam Results'[score] < 20, "10-19", 'Exam Results'[score] < 30, "20-29", 'Exam Results'[score] < 40, "30-39", 'Exam Results'[score] < 50, "40-49", 'Exam Results'[score] < 60, "50-59", 'Exam Results'[score] < 70, "60-69", 'Exam Results'[score] < 80, "70-79", 'Exam Results'[score] < 90, "80-89", "90-100" )
+		dataType: string
+		displayFolder: Bands
+		lineageTag: 18c8ea53-55fc-479c-8e65-cfe636aa9f08
+		sortByColumn: 'Score Band Order'
+
+	column 'Score Band Order' = SWITCH ( TRUE (), ISBLANK ( 'Exam Results'[score] ), BLANK (), 'Exam Results'[score] < 10, 1, 'Exam Results'[score] < 20, 2, 'Exam Results'[score] < 30, 3, 'Exam Results'[score] < 40, 4, 'Exam Results'[score] < 50, 5, 'Exam Results'[score] < 60, 6, 'Exam Results'[score] < 70, 7, 'Exam Results'[score] < 80, 8, 'Exam Results'[score] < 90, 9, 10 )
+		dataType: int64
+		isHidden
+		displayFolder: Bands
+		lineageTag: 4f7fc185-5e62-4b9d-9a58-6f3e465323cd
+
+	partition 'Exam Results' = m
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "fact_exam_result.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    Blanks = Table.ReplaceValue(Promoted, "", null, Replacer.ReplaceValue, Table.ColumnNames(Promoted)),
+				    Typed = Table.TransformColumnTypes(Blanks, {{"exam_result_key", Int64.Type}, {"student_key", Int64.Type}, {"exam_key", Int64.Type}, {"class_key", Int64.Type}, {"date_key", Int64.Type}, {"attendance_status", type text}, {"score", type number}, {"questions_attempted", Int64.Type}, {"questions_correct", Int64.Type}, {"time_spent_min", Int64.Type}, {"preparation_days", Int64.Type}, {"exam_anxiety_level", type number}, {"time_management_score", type number}, {"grade_letter", type text}, {"is_pass", Int64.Type}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

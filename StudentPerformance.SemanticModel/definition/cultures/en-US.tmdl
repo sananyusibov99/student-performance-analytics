@@ -1,0 +1,287 @@
+cultureInfo en-US
+
+	linguisticMetadata =
+			{
+			  "Version": "2.0.0",
+			  "Language": "en-US",
+			  "Entities": {
+			    "students.family_income": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Students",
+			          "ConceptualProperty": "family_income"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "students.school_type": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Students",
+			          "ConceptualProperty": "school_type"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "student.family_income": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Student",
+			          "ConceptualProperty": "family_income"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Family income": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "school.school_type": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "School",
+			          "ConceptualProperty": "school_type"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "School type": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "student.student_id": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Student",
+			          "ConceptualProperty": "student_id"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Student ID": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "student.grade_level": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Student",
+			          "ConceptualProperty": "grade_level"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Grade": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "school.school_name": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "School",
+			          "ConceptualProperty": "school_name"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "School": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "date.year_month": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Date",
+			          "ConceptualProperty": "Year Month"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Month": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "assignment.assignment_type": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Assignment",
+			          "ConceptualProperty": "assignment_type"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Assignment type": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "subject.subject_name": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Subject",
+			          "ConceptualProperty": "subject_name"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Subject": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "teacher.teacher_name": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Teacher",
+			          "ConceptualProperty": "teacher_name"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Teacher": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "teacher.years_experience": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Teacher",
+			          "ConceptualProperty": "years_experience"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Experience (yrs)": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "interventions.intervention_type": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Interventions",
+			          "ConceptualProperty": "intervention_type"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Programme": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "program_evaluation.program": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Program Evaluation",
+			          "ConceptualProperty": "program"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "program_evaluation.participants": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Program Evaluation",
+			          "ConceptualProperty": "participants"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "program_evaluation.method": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Program Evaluation",
+			          "ConceptualProperty": "method"
+			        }
+			      },
+			      "State": "Generated"
+			    }
+			  }
+			}
+		contentType: json
+

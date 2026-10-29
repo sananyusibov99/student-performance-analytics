@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "StudentPerformance"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "ec357c24-a11a-4688-87e1-eb590131d1d3"
+  }
+}

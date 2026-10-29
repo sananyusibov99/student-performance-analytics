@@ -1,0 +1,240 @@
+/// Source: data\model\fact_wellbeing_survey.csv
+table 'Wellbeing Survey'
+	lineageTag: 88ecb333-f41e-4cd2-bd4d-97b1a48083ed
+
+	column survey_key
+		dataType: int64
+		isHidden
+		lineageTag: 13d27f41-1cf8-43fb-8dd7-e0e89d921e4f
+		summarizeBy: none
+		sourceColumn: survey_key
+
+	column student_key
+		dataType: int64
+		isHidden
+		lineageTag: 8a00129d-d2d0-4592-9155-8cd52b9c616d
+		summarizeBy: none
+		sourceColumn: student_key
+
+	column term_key
+		dataType: int64
+		isHidden
+		lineageTag: 68993470-3c33-469f-acf0-f76511f08629
+		summarizeBy: none
+		sourceColumn: term_key
+
+	column survey_date_key
+		dataType: int64
+		isHidden
+		lineageTag: 126a7a2f-54cb-42c2-8414-d7e9a603e0ae
+		summarizeBy: none
+		sourceColumn: survey_date_key
+
+	column study_hours_per_day
+		dataType: double
+		lineageTag: 5c1904fe-41bf-4028-85ca-0a72babec100
+		summarizeBy: none
+		sourceColumn: study_hours_per_day
+
+	column self_study_hours
+		dataType: double
+		lineageTag: b8ae4637-097a-4abd-b82a-24b72d326959
+		summarizeBy: none
+		sourceColumn: self_study_hours
+
+	column sleep_hours
+		dataType: double
+		lineageTag: 54e72adb-ad1b-4579-9dfb-23686f0ea757
+		summarizeBy: none
+		sourceColumn: sleep_hours
+
+	column daily_screen_time
+		dataType: double
+		lineageTag: bc9e40f2-1449-4596-89cf-0efbf7aa4911
+		summarizeBy: none
+		sourceColumn: daily_screen_time
+
+	column physical_activity_hours
+		dataType: double
+		lineageTag: 545a8297-4d23-4f06-9897-73486cd31b7b
+		summarizeBy: none
+		sourceColumn: physical_activity_hours
+
+	column stress_level
+		dataType: int64
+		lineageTag: d57aba58-9663-428d-80d4-8356c05e3328
+		summarizeBy: none
+		sourceColumn: stress_level
+
+	column practice_tests_completed
+		dataType: int64
+		lineageTag: a96a82fa-608f-48eb-8a00-eea10a34fecc
+		summarizeBy: none
+		sourceColumn: practice_tests_completed
+
+	column sleep_quality
+		dataType: string
+		lineageTag: d3df8738-2aca-44a7-86b1-a9d80d371226
+		sourceColumn: sleep_quality
+		sortByColumn: 'sleep_quality Order'
+
+	column class_participation
+		dataType: string
+		lineageTag: fd0e2be8-80e8-4a1f-a966-4281a02a04e0
+		sourceColumn: class_participation
+		sortByColumn: 'class_participation Order'
+
+	column study_consistency
+		dataType: string
+		lineageTag: 83c67ec7-d354-436d-b38b-d1bf82a87d90
+		sourceColumn: study_consistency
+		sortByColumn: 'study_consistency Order'
+
+	column study_environment
+		dataType: string
+		lineageTag: 351ffe03-f3d3-4758-8d01-680088fe744a
+		sourceColumn: study_environment
+
+	column study_method
+		dataType: string
+		lineageTag: 1e0bc8cf-0785-4071-8435-6a0f9a4c3a29
+		sourceColumn: study_method
+
+	column revision_frequency
+		dataType: string
+		lineageTag: b471d57e-95d3-43b6-b113-81122907f75b
+		sourceColumn: revision_frequency
+		sortByColumn: 'revision_frequency Order'
+
+	column notes_quality
+		dataType: string
+		lineageTag: 215d5125-3403-4858-8c76-63d039599167
+		sourceColumn: notes_quality
+
+	column break_frequency
+		dataType: string
+		lineageTag: 2f4a99f2-3f65-47f5-82a2-faf77cd18ac9
+		sourceColumn: break_frequency
+
+	column motivation_level
+		dataType: string
+		lineageTag: cfe3c686-918f-490d-ab10-a1448cecf69e
+		sourceColumn: motivation_level
+		sortByColumn: 'motivation_level Order'
+
+	column educational_app_usage
+		dataType: string
+		lineageTag: db75dd3e-4a6e-4745-acb0-4d830f34bd61
+		sourceColumn: educational_app_usage
+		sortByColumn: 'educational_app_usage Order'
+
+	column 'motivation_level Order'
+		dataType: int64
+		isHidden
+		lineageTag: 6a176429-d71f-46e0-89ba-5a82ebd79dfa
+		summarizeBy: none
+		sourceColumn: motivation_level Order
+
+	column 'study_consistency Order'
+		dataType: int64
+		isHidden
+		lineageTag: a3ca1979-21f3-40cd-b5d4-6047747bcde2
+		summarizeBy: none
+		sourceColumn: study_consistency Order
+
+	column 'class_participation Order'
+		dataType: int64
+		isHidden
+		lineageTag: c36dc321-cd3d-42e5-b763-91a466c80a6c
+		summarizeBy: none
+		sourceColumn: class_participation Order
+
+	column 'educational_app_usage Order'
+		dataType: int64
+		isHidden
+		lineageTag: 635c4093-8d67-442c-b2fd-31a41164af2c
+		summarizeBy: none
+		sourceColumn: educational_app_usage Order
+
+	column 'sleep_quality Order'
+		dataType: int64
+		isHidden
+		lineageTag: 951763b6-9828-4ca9-840d-aaceea4572df
+		summarizeBy: none
+		sourceColumn: sleep_quality Order
+
+	column 'revision_frequency Order'
+		dataType: int64
+		isHidden
+		lineageTag: 99cb50a8-1748-4292-9e59-1b3ec096993e
+		summarizeBy: none
+		sourceColumn: revision_frequency Order
+
+	column 'Study Hours Band' = SWITCH ( TRUE (), ISBLANK ( 'Wellbeing Survey'[study_hours_per_day] ), BLANK (), 'Wellbeing Survey'[study_hours_per_day] < 1, "< 1 h", 'Wellbeing Survey'[study_hours_per_day] < 2, "1-2 h", 'Wellbeing Survey'[study_hours_per_day] < 3, "2-3 h", 'Wellbeing Survey'[study_hours_per_day] < 4, "3-4 h", 'Wellbeing Survey'[study_hours_per_day] < 6, "4-6 h", "6+ h" )
+		dataType: string
+		displayFolder: Bands
+		lineageTag: 07946336-5a89-42e0-8fab-29611a80972f
+		sortByColumn: 'Study Hours Band Order'
+
+	column 'Study Hours Band Order' = SWITCH ( TRUE (), ISBLANK ( 'Wellbeing Survey'[study_hours_per_day] ), BLANK (), 'Wellbeing Survey'[study_hours_per_day] < 1, 1, 'Wellbeing Survey'[study_hours_per_day] < 2, 2, 'Wellbeing Survey'[study_hours_per_day] < 3, 3, 'Wellbeing Survey'[study_hours_per_day] < 4, 4, 'Wellbeing Survey'[study_hours_per_day] < 6, 5, 6 )
+		dataType: int64
+		isHidden
+		displayFolder: Bands
+		lineageTag: 392c17e7-9de5-42f4-8d8d-ca1412bc7a6f
+
+	column 'Self Study Band' = SWITCH ( TRUE (), ISBLANK ( 'Wellbeing Survey'[self_study_hours] ), BLANK (), 'Wellbeing Survey'[self_study_hours] < 1, "< 1 h", 'Wellbeing Survey'[self_study_hours] < 2, "1-2 h", 'Wellbeing Survey'[self_study_hours] < 3, "2-3 h", 'Wellbeing Survey'[self_study_hours] < 4, "3-4 h", "4+ h" )
+		dataType: string
+		displayFolder: Bands
+		lineageTag: 5837b82f-06de-41d2-8a3e-f210c79b7abc
+		sortByColumn: 'Self Study Band Order'
+
+	column 'Self Study Band Order' = SWITCH ( TRUE (), ISBLANK ( 'Wellbeing Survey'[self_study_hours] ), BLANK (), 'Wellbeing Survey'[self_study_hours] < 1, 1, 'Wellbeing Survey'[self_study_hours] < 2, 2, 'Wellbeing Survey'[self_study_hours] < 3, 3, 'Wellbeing Survey'[self_study_hours] < 4, 4, 5 )
+		dataType: int64
+		isHidden
+		displayFolder: Bands
+		lineageTag: 6e8b6d99-7ee2-447e-960b-de8e62e621a3
+
+	column 'Sleep Band' = SWITCH ( TRUE (), ISBLANK ( 'Wellbeing Survey'[sleep_hours] ), BLANK (), 'Wellbeing Survey'[sleep_hours] < 5, "< 5 h", 'Wellbeing Survey'[sleep_hours] < 6, "5-6 h", 'Wellbeing Survey'[sleep_hours] < 7, "6-7 h", 'Wellbeing Survey'[sleep_hours] < 8, "7-8 h", 'Wellbeing Survey'[sleep_hours] < 9, "8-9 h", "9+ h" )
+		dataType: string
+		displayFolder: Bands
+		lineageTag: 796cb6b8-b8b0-4799-ba98-ed977e2796b3
+		sortByColumn: 'Sleep Band Order'
+
+	column 'Sleep Band Order' = SWITCH ( TRUE (), ISBLANK ( 'Wellbeing Survey'[sleep_hours] ), BLANK (), 'Wellbeing Survey'[sleep_hours] < 5, 1, 'Wellbeing Survey'[sleep_hours] < 6, 2, 'Wellbeing Survey'[sleep_hours] < 7, 3, 'Wellbeing Survey'[sleep_hours] < 8, 4, 'Wellbeing Survey'[sleep_hours] < 9, 5, 6 )
+		dataType: int64
+		isHidden
+		displayFolder: Bands
+		lineageTag: 18f4264b-93d6-4034-ae55-3561128a67f7
+
+	column 'Practice Tests Band' = SWITCH ( TRUE (), ISBLANK ( 'Wellbeing Survey'[practice_tests_completed] ), BLANK (), 'Wellbeing Survey'[practice_tests_completed] < 3, "0-2", 'Wellbeing Survey'[practice_tests_completed] < 6, "3-5", 'Wellbeing Survey'[practice_tests_completed] < 9, "6-8", 'Wellbeing Survey'[practice_tests_completed] < 12, "9-11", "12+" )
+		dataType: string
+		displayFolder: Bands
+		lineageTag: 7d5d6e49-1df0-407e-af17-6ece3d883c79
+		sortByColumn: 'Practice Tests Band Order'
+
+	column 'Practice Tests Band Order' = SWITCH ( TRUE (), ISBLANK ( 'Wellbeing Survey'[practice_tests_completed] ), BLANK (), 'Wellbeing Survey'[practice_tests_completed] < 3, 1, 'Wellbeing Survey'[practice_tests_completed] < 6, 2, 'Wellbeing Survey'[practice_tests_completed] < 9, 3, 'Wellbeing Survey'[practice_tests_completed] < 12, 4, 5 )
+		dataType: int64
+		isHidden
+		displayFolder: Bands
+		lineageTag: b34a3be1-80b0-4e54-af5c-a0f3a611882b
+
+	partition 'Wellbeing Survey' = m
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "fact_wellbeing_survey.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    Blanks = Table.ReplaceValue(Promoted, "", null, Replacer.ReplaceValue, Table.ColumnNames(Promoted)),
+				    Typed = Table.TransformColumnTypes(Blanks, {{"survey_key", Int64.Type}, {"student_key", Int64.Type}, {"term_key", Int64.Type}, {"survey_date_key", Int64.Type}, {"study_hours_per_day", type number}, {"self_study_hours", type number}, {"sleep_hours", type number}, {"daily_screen_time", type number}, {"physical_activity_hours", type number}, {"stress_level", Int64.Type}, {"practice_tests_completed", Int64.Type}, {"sleep_quality", type text}, {"class_participation", type text}, {"study_consistency", type text}, {"study_environment", type text}, {"study_method", type text}, {"revision_frequency", type text}, {"notes_quality", type text}, {"break_frequency", type text}, {"motivation_level", type text}, {"educational_app_usage", type text}}, "en-US"),
+				    Ord1 = Table.AddColumn(Typed, "motivation_level Order", each List.PositionOf({"Low", "Medium", "High"}, [motivation_level]) + 1, Int64.Type),
+				    Ord2 = Table.AddColumn(Ord1, "study_consistency Order", each List.PositionOf({"Low", "Medium", "High"}, [study_consistency]) + 1, Int64.Type),
+				    Ord3 = Table.AddColumn(Ord2, "class_participation Order", each List.PositionOf({"Low", "Medium", "High"}, [class_participation]) + 1, Int64.Type),
+				    Ord4 = Table.AddColumn(Ord3, "educational_app_usage Order", each List.PositionOf({"Low", "Moderate", "High"}, [educational_app_usage]) + 1, Int64.Type),
+				    Ord5 = Table.AddColumn(Ord4, "sleep_quality Order", each List.PositionOf({"Poor", "Fair", "Good", "Excellent", "Not specified"}, [sleep_quality]) + 1, Int64.Type),
+				    Ord6 = Table.AddColumn(Ord5, "revision_frequency Order", each List.PositionOf({"Rarely", "Weekly", "Daily"}, [revision_frequency]) + 1, Int64.Type)
+				in
+				    Ord6
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

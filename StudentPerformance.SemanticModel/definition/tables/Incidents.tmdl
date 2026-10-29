@@ -1,0 +1,67 @@
+/// Source: data\model\fact_behavior_incident.csv
+table Incidents
+	lineageTag: 9cb06074-12d4-43f5-ac25-2476c4a83221
+
+	column incident_key
+		dataType: int64
+		isHidden
+		lineageTag: 06db6af0-d0bb-4e20-825b-9179811438bb
+		summarizeBy: none
+		sourceColumn: incident_key
+
+	column student_key
+		dataType: int64
+		isHidden
+		lineageTag: ddf1596d-9466-464a-b5e6-3a9bfa496387
+		summarizeBy: none
+		sourceColumn: student_key
+
+	column school_key
+		dataType: int64
+		isHidden
+		lineageTag: c6974694-a80b-48fe-a4f4-9122ca24c92c
+		summarizeBy: none
+		sourceColumn: school_key
+
+	column date_key
+		dataType: int64
+		isHidden
+		lineageTag: be1ea5d6-334e-495a-b6f2-b06941883dcd
+		summarizeBy: none
+		sourceColumn: date_key
+
+	column incident_type
+		dataType: string
+		lineageTag: 8b9c4d9c-60e6-429c-961e-ab8bf710e0d9
+		sourceColumn: incident_type
+
+	column severity
+		dataType: string
+		lineageTag: bed695fd-390c-47e3-b71f-a67e77a90ebf
+		sourceColumn: severity
+
+	column action_taken
+		dataType: string
+		lineageTag: 27619bc2-dfc2-4c4f-8641-6557f7af7ca2
+		sourceColumn: action_taken
+
+	column suspension_days
+		dataType: int64
+		lineageTag: 1111d47f-1885-4189-a9ab-b83e12df8f76
+		summarizeBy: none
+		sourceColumn: suspension_days
+
+	partition Incidents = m
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "fact_behavior_incident.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    Blanks = Table.ReplaceValue(Promoted, "", null, Replacer.ReplaceValue, Table.ColumnNames(Promoted)),
+				    Typed = Table.TransformColumnTypes(Blanks, {{"incident_key", Int64.Type}, {"student_key", Int64.Type}, {"school_key", Int64.Type}, {"date_key", Int64.Type}, {"incident_type", type text}, {"severity", type text}, {"action_taken", type text}, {"suspension_days", Int64.Type}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

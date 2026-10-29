@@ -1,0 +1,380 @@
+/// KPI measures
+table Metrics
+	lineageTag: 55959d4d-b655-4d7d-9821-4cddae1199fb
+
+	/// Number of students in the current selection
+	measure Students = COUNTROWS ( 'Student' )
+		formatString: #,0
+		displayFolder: Academic
+		lineageTag: 9f2b19b0-6a38-41bb-8974-acaff52f54c7
+
+	/// Exam results where the student sat the exam
+	measure 'Exam Sittings' = CALCULATE ( COUNTROWS ( 'Exam Results' ), 'Exam Results'[attendance_status] = "Sat" )
+		formatString: #,0
+		displayFolder: Academic
+		lineageTag: 4c33f4a5-63db-4886-8c48-08cfd2be2886
+
+	/// Average exam score of students who sat the exam
+	measure 'Avg Exam Score' = AVERAGE ( 'Exam Results'[score] )
+		formatString: 0.0
+		displayFolder: Academic
+		lineageTag: 4e876c07-3bbf-4241-9473-de25cf8b1d8e
+
+	/// Share of sat exams scored at or above the pass mark (50)
+	measure 'Pass Rate' = DIVIDE ( CALCULATE ( COUNTROWS ( 'Exam Results' ), 'Exam Results'[is_pass] = 1 ), [Exam Sittings] )
+		formatString: 0.0%
+		displayFolder: Academic
+		lineageTag: 7cb4acd5-520c-414e-9b39-a87e29ed3b95
+
+	/// Share of sat exams graded A (85+)
+	measure 'Top Grade Rate' = DIVIDE ( CALCULATE ( COUNTROWS ( 'Exam Results' ), 'Exam Results'[grade_letter] = "A" ), [Exam Sittings] )
+		formatString: 0.0%
+		displayFolder: Academic
+		lineageTag: f5e6060a-66e2-4c04-a204-595f06b03461
+
+	/// Share of scheduled exams the student missed
+	measure 'No-show Rate' = DIVIDE ( CALCULATE ( COUNTROWS ( 'Exam Results' ), 'Exam Results'[attendance_status] = "No-show" ), COUNTROWS ( 'Exam Results' ) )
+		formatString: 0.0%
+		displayFolder: Academic
+		lineageTag: 13c70bc7-6c01-4080-aec1-7f3ae2f1c521
+
+	/// Correct answers divided by attempted questions
+	measure 'Answer Accuracy' = DIVIDE ( SUM ( 'Exam Results'[questions_correct] ), SUM ( 'Exam Results'[questions_attempted] ) )
+		formatString: 0.0%
+		displayFolder: Academic
+		lineageTag: 4b178746-6260-47d8-8f2c-2c40d53bbdf3
+
+	/// Year-over-year growth: latest final minus prior-year final, same students
+	measure 'Score Change' = VAR curT = CALCULATE ( MAX ( 'Term'[term_key] ), REMOVEFILTERS ( 'Term' ) ) VAR priT = CALCULATE ( MIN ( 'Term'[term_key] ), REMOVEFILTERS ( 'Term' ) ) VAR t = ADDCOLUMNS ( VALUES ( 'Student'[student_key] ), "@cur", CALCULATE ( [Avg Exam Score], REMOVEFILTERS ( 'Term' ), REMOVEFILTERS ( 'Date' ), 'Exam'[exam_type] = "Final", 'Exam'[term_key] = curT ), "@pri", CALCULATE ( [Avg Exam Score], REMOVEFILTERS ( 'Term' ), REMOVEFILTERS ( 'Date' ), 'Exam'[exam_type] = "Final", 'Exam'[term_key] = priT ) ) RETURN AVERAGEX ( FILTER ( t, NOT ISBLANK ( [@cur] ) && NOT ISBLANK ( [@pri] ) ), [@cur] - [@pri] )
+		formatString: +0.0;-0.0;0.0
+		displayFolder: Academic
+		lineageTag: 92bcc0e0-b66f-4e33-b8b3-d60e3d245a27
+
+	/// Within-term growth from midterm to final
+	measure 'Midterm to Final Change' = VAR t = ADDCOLUMNS ( VALUES ( 'Student'[student_key] ), "@m", CALCULATE ( [Avg Exam Score], 'Exam'[exam_type] = "Midterm", KEEPFILTERS ( 'Term'[is_current_year] = TRUE () ) ), "@f", CALCULATE ( [Avg Exam Score], 'Exam'[exam_type] = "Final", KEEPFILTERS ( 'Term'[is_current_year] = TRUE () ) ) ) RETURN AVERAGEX ( FILTER ( t, NOT ISBLANK ( [@m] ) && NOT ISBLANK ( [@f] ) ), [@f] - [@m] )
+		formatString: +0.0;-0.0;0.0
+		displayFolder: Academic
+		lineageTag: e3c6bf75-21a4-4aba-b4f0-8dfe1a690696
+
+	/// Average score of High-income minus Low-income students
+	measure 'Income Gap' = CALCULATE ( [Avg Exam Score], 'Student'[family_income] = "High" ) - CALCULATE ( [Avg Exam Score], 'Student'[family_income] = "Low" )
+		formatString: +0.0;-0.0;0.0
+		displayFolder: Academic
+		lineageTag: cdb908f9-a213-4666-93b3-daf250fa0f61
+
+	/// Average score of female minus male students
+	measure 'Gender Gap' = CALCULATE ( [Avg Exam Score], 'Student'[gender] = "Female" ) - CALCULATE ( [Avg Exam Score], 'Student'[gender] = "Male" )
+		formatString: +0.0;-0.0;0.0
+		displayFolder: Academic
+		lineageTag: 3601e7d8-e1c5-4bd5-a2db-7a70ec2ff784
+
+	/// Credit-weighted grade point average of completed courses
+	measure GPA = VAR done = CALCULATETABLE ( 'Enrollments', 'Enrollments'[status] = "Completed" ) RETURN DIVIDE ( SUMX ( done, 'Enrollments'[grade_points] * 'Enrollments'[credits_attempted] ), SUMX ( done, 'Enrollments'[credits_attempted] ) )
+		formatString: 0.00
+		displayFolder: Courses
+		lineageTag: 0b76b770-08ec-41ed-ab77-a0345753845d
+
+	/// Average term score per course enrolment
+	measure 'Avg Course Score' = AVERAGE ( 'Enrollments'[final_score] )
+		formatString: 0.0
+		displayFolder: Courses
+		lineageTag: 74cc3e34-39ab-4333-805e-7f0691b2007a
+
+	/// Share of course enrolments that ended in withdrawal
+	measure 'Course Withdrawal Rate' = DIVIDE ( CALCULATE ( COUNTROWS ( 'Enrollments' ), 'Enrollments'[status] = "Withdrawn" ), COUNTROWS ( 'Enrollments' ) )
+		formatString: 0.0%
+		displayFolder: Courses
+		lineageTag: 3da2de48-1448-4837-a382-423c8e0176f6
+
+	/// Credits earned divided by credits attempted
+	measure 'Credit Completion' = DIVIDE ( SUM ( 'Enrollments'[credits_earned] ), SUM ( 'Enrollments'[credits_attempted] ) )
+		formatString: 0.0%
+		displayFolder: Courses
+		lineageTag: b9533150-5b08-48d1-99c8-c9d67aa157a5
+
+	/// Course score minus the student's prior-year final in the same subject
+	measure 'Avg Course Growth' = AVERAGE ( 'Enrollments'[Course Growth] )
+		formatString: +0.0;-0.0;0.0
+		displayFolder: Courses
+		lineageTag: 44bbbea2-5cb9-498c-90dd-a5aef1f18dd1
+
+	/// Growth of the teacher's students minus average growth in the same subject and term
+	measure 'Teacher Value Added' = VAR g = [Avg Course Growth] RETURN IF ( NOT ISBLANK ( g ), g - CALCULATE ( [Avg Course Growth], REMOVEFILTERS ( 'Teacher' ), REMOVEFILTERS ( 'Class'[class_code], 'Class'[section], 'Class'[room], 'Class'[schedule_slot] ) ) )
+		formatString: +0.0;-0.0;0.0
+		displayFolder: Courses
+		lineageTag: bba8f13d-a824-470c-a579-f3cc938022e2
+
+	/// Students who passed every core course they took
+	measure 'On-track Rate' = VAR t = FILTER ( VALUES ( 'Student'[student_key] ), CALCULATE ( COUNTROWS ( 'Enrollments' ) ) > 0 ) VAR off = FILTER ( t, CALCULATE ( COUNTROWS ( 'Enrollments' ), 'Subject'[is_core] = TRUE (), 'Enrollments'[final_grade] = "F" || 'Enrollments'[status] = "Withdrawn" ) > 0 ) RETURN DIVIDE ( COUNTROWS ( t ) - COUNTROWS ( off ), COUNTROWS ( t ) )
+		formatString: 0.0%
+		displayFolder: Courses
+		lineageTag: 8a4a3377-c50b-4764-9323-d03101ef97a6
+
+	/// Instructional days in the selection (attendance is recorded for the current school year)
+	measure 'School Days' = CALCULATE ( COUNTROWS ( 'Date' ), KEEPFILTERS ( 'Date'[is_school_day] = TRUE () ), KEEPFILTERS ( 'Term'[is_current_year] = TRUE () ) )
+		formatString: #,0
+		displayFolder: Attendance
+		lineageTag: 24726bbc-0234-4acf-8a24-0fafa3cf96bd
+
+	/// Students times school days: the attendance denominator
+	measure 'Student Days' = [Students] * [School Days]
+		formatString: #,0
+		displayFolder: Attendance
+		lineageTag: 5e65a76f-9698-4164-8471-776f3570e24e
+
+	/// Recorded absences, excused or not
+	measure 'Absent Days' = CALCULATE ( COUNTROWS ( 'Attendance' ), 'Attendance'[status] IN { "Absent", "Excused" } )
+		formatString: #,0
+		displayFolder: Attendance
+		lineageTag: 150ca305-46bb-473c-bb04-718da776a672
+
+	/// Share of student school days attended; attendance is stored as exceptions, so present days are implied by the calendar
+	measure 'Attendance Rate' = VAR d = [Student Days] RETURN IF ( d > 0, 1 - DIVIDE ( [Absent Days], d ) )
+		formatString: 0.0%
+		displayFolder: Attendance
+		lineageTag: 142c142f-89f4-40d6-a81a-280a9fdb0da3
+
+	/// Share of student school days with a late arrival
+	measure 'Late Rate' = DIVIDE ( CALCULATE ( COUNTROWS ( 'Attendance' ), 'Attendance'[status] = "Late" ), [Student Days] )
+		formatString: 0.0%
+		displayFolder: Attendance
+		lineageTag: 514d5328-4645-44d4-915d-c81d599c0d5d
+
+	/// Excused absences divided by all absences
+	measure 'Excused Absence Share' = DIVIDE ( CALCULATE ( COUNTROWS ( 'Attendance' ), 'Attendance'[status] = "Excused" ), CALCULATE ( COUNTROWS ( 'Attendance' ), 'Attendance'[status] IN { "Excused", "Absent" } ) )
+		formatString: 0.0%
+		displayFolder: Attendance
+		lineageTag: ff6203cb-cb68-4006-8ab2-0c3ac86176c6
+
+	/// Share of students who missed more than 10% of school days
+	measure 'Chronic Absentee Rate' = VAR days = [School Days] VAR t = ADDCOLUMNS ( VALUES ( 'Student'[student_key] ), "@a", [Absent Days] ) RETURN IF ( days > 0, DIVIDE ( COUNTROWS ( FILTER ( t, [@a] > 0.1 * days ) ), COUNTROWS ( t ) ) )
+		formatString: 0.0%
+		displayFolder: Attendance
+		lineageTag: f51bb723-b898-46a6-b081-8694c45110f4
+
+	/// Average lateness on late days
+	measure 'Avg Minutes Late' = CALCULATE ( AVERAGE ( 'Attendance'[minutes_late] ), 'Attendance'[status] = "Late" )
+		formatString: 0.0
+		displayFolder: Attendance
+		lineageTag: 697a09e1-621d-4472-9733-59adc3038bc1
+
+	/// Student assignments due
+	measure 'Assignments Due' = COUNTROWS ( 'Submissions' )
+		formatString: #,0
+		displayFolder: Engagement
+		lineageTag: b6f50ab7-29f4-40e4-8845-71b5f3db84c8
+
+	/// Share of assignments submitted
+	measure 'Completion Rate' = DIVIDE ( CALCULATE ( COUNTROWS ( 'Submissions' ), 'Submissions'[status] <> "Missing" ), COUNTROWS ( 'Submissions' ) )
+		formatString: 0.0%
+		displayFolder: Engagement
+		lineageTag: 7874b840-56d9-413a-89fe-f9c8108ae503
+
+	/// Share of submitted assignments handed in on time
+	measure 'On-time Rate' = DIVIDE ( CALCULATE ( COUNTROWS ( 'Submissions' ), 'Submissions'[status] = "On time" ), CALCULATE ( COUNTROWS ( 'Submissions' ), 'Submissions'[status] <> "Missing" ) )
+		formatString: 0.0%
+		displayFolder: Engagement
+		lineageTag: b7d593f2-8c06-4c27-9806-3517a6d4ec08
+
+	/// Average delay of late submissions
+	measure 'Avg Days Late' = CALCULATE ( AVERAGE ( 'Submissions'[days_late] ), 'Submissions'[status] = "Late" )
+		formatString: 0.0
+		displayFolder: Engagement
+		lineageTag: 0044852e-4e39-419a-b040-ee5aa0afae93
+
+	/// Points earned divided by points available on submitted work
+	measure 'Assignment Score %' = DIVIDE ( SUM ( 'Submissions'[points_earned] ), CALCULATE ( SUM ( 'Submissions'[max_points] ), 'Submissions'[status] <> "Missing" ) )
+		formatString: 0.0%
+		displayFolder: Engagement
+		lineageTag: 64646f8f-d569-40d8-bb9e-7286dbe8484d
+
+	/// Online learning minutes per student per week
+	measure 'LMS Minutes per Week' = DIVIDE ( SUM ( 'LMS Activity'[online_learning_min] ) + SUM ( 'LMS Activity'[online_course_min] ) + SUM ( 'LMS Activity'[edu_app_min] ), COUNTROWS ( 'LMS Activity' ) )
+		formatString: #,0
+		displayFolder: Engagement
+		lineageTag: 0fe99664-8dce-434f-b22c-43c8c00a8fa8
+
+	/// Share of student-weeks with at least one LMS login
+	measure 'Weekly Active Rate' = DIVIDE ( CALCULATE ( COUNTROWS ( 'LMS Activity' ), 'LMS Activity'[logins] > 0 ), COUNTROWS ( 'LMS Activity' ) )
+		formatString: 0.0%
+		displayFolder: Engagement
+		lineageTag: 603dfb25-be54-4f2b-b840-ab20c9d5e284
+
+	/// Behaviour incidents
+	measure Incidents = COUNTROWS ( 'Incidents' )
+		formatString: #,0
+		displayFolder: Behavior
+		lineageTag: a3390b28-60d8-4fb0-9826-39088d6ddbec
+
+	/// Incidents per 100 students
+	measure 'Incidents per 100 Students' = DIVIDE ( [Incidents], [Students] ) * 100
+		formatString: 0.0
+		displayFolder: Behavior
+		lineageTag: e5f48e29-0331-4150-b7d2-bbe7d39fc2c4
+
+	/// Share of students suspended at least once
+	measure 'Suspension Rate' = DIVIDE ( CALCULATE ( DISTINCTCOUNT ( 'Incidents'[student_key] ), 'Incidents'[action_taken] = "Suspension" ), [Students] )
+		formatString: 0.0%
+		displayFolder: Behavior
+		lineageTag: ba3aeeaf-5210-480f-812b-e0c715d936e1
+
+	/// Self-reported study hours per day
+	measure 'Avg Study Hours' = AVERAGE ( 'Wellbeing Survey'[study_hours_per_day] )
+		formatString: 0.0
+		displayFolder: Wellbeing
+		lineageTag: 19c0cd76-454c-498f-b313-429e2a0930f8
+
+	/// Self-reported sleep hours per night
+	measure 'Avg Sleep Hours' = AVERAGE ( 'Wellbeing Survey'[sleep_hours] )
+		formatString: 0.0
+		displayFolder: Wellbeing
+		lineageTag: 79493f09-886f-4b9b-ab49-9a338f6cdf2e
+
+	/// Self-reported stress (1-10)
+	measure 'Avg Stress' = AVERAGE ( 'Wellbeing Survey'[stress_level] )
+		formatString: 0.0
+		displayFolder: Wellbeing
+		lineageTag: a0639b6b-53aa-4d98-b3c3-4d5a3ce6c58f
+
+	/// Share of survey answers with stress 8 or higher
+	measure 'High Stress Share' = DIVIDE ( CALCULATE ( COUNTROWS ( 'Wellbeing Survey' ), 'Wellbeing Survey'[stress_level] >= 8 ), COUNTROWS ( 'Wellbeing Survey' ) )
+		formatString: 0.0%
+		displayFolder: Wellbeing
+		lineageTag: 37978a2c-f85e-4192-8c0f-3b1f3428de1a
+
+	/// Share of survey answers with under 6 hours of sleep
+	measure 'Short Sleep Share' = DIVIDE ( CALCULATE ( COUNTROWS ( 'Wellbeing Survey' ), 'Wellbeing Survey'[sleep_hours] < 6 ), COUNTROWS ( 'Wellbeing Survey' ) )
+		formatString: 0.0%
+		displayFolder: Wellbeing
+		lineageTag: c0e75846-428b-4282-b474-d7efdd231787
+
+	/// Average exam score of the students in the selected survey group
+	measure 'Avg Score by Habit' = CALCULATE ( [Avg Exam Score], TREATAS ( VALUES ( 'Wellbeing Survey'[student_key] ), 'Student'[student_key] ) )
+		formatString: 0.0
+		displayFolder: Wellbeing
+		lineageTag: d98c42a1-612c-4c61-84dd-51c0f771c855
+
+	/// Pass rate of the students in the selected survey group
+	measure 'Pass Rate by Habit' = CALCULATE ( [Pass Rate], TREATAS ( VALUES ( 'Wellbeing Survey'[student_key] ), 'Student'[student_key] ) )
+		formatString: 0.0%
+		displayFolder: Wellbeing
+		lineageTag: 94143c01-e9f1-4bf5-97a4-52035e0bdc5a
+
+	/// ABC early-warning flags for one student: Attendance < 90%, Behaviour (2+ incidents or a suspension), Course performance (an F or average below 55)
+	measure 'Risk Flags' = VAR a = [Attendance Rate] VAR inc = [Incidents] VAR susp = CALCULATE ( [Incidents], 'Incidents'[action_taken] = "Suspension" ) VAR f = CALCULATE ( COUNTROWS ( 'Enrollments' ), 'Enrollments'[final_grade] = "F" ) VAR sc = [Avg Exam Score] RETURN IF ( HASONEVALUE ( 'Student'[student_key] ), INT ( NOT ISBLANK ( a ) && a < 0.9 ) + INT ( inc >= 2 || susp >= 1 ) + INT ( f >= 1 || ( NOT ISBLANK ( sc ) && sc < 55 ) ) )
+		formatString: 0
+		displayFolder: Early Warning
+		lineageTag: 163f8358-fa67-44c6-9cdb-ddd47e636acc
+
+	/// Share of students flagged on Attendance (below 90%)
+	measure 'Attendance Flag Rate' = VAR days = [School Days] RETURN IF ( days > 0, DIVIDE ( COUNTROWS ( FILTER ( VALUES ( 'Student'[student_key] ), [Absent Days] > 0.1 * days ) ), [Students] ) )
+		formatString: 0.0%
+		displayFolder: Early Warning
+		lineageTag: 9627ddf1-8dbc-4f61-bee2-0e52ad419074
+
+	/// Share of students flagged on Behaviour (2+ incidents or a suspension)
+	measure 'Behavior Flag Rate' = DIVIDE ( COUNTROWS ( FILTER ( VALUES ( 'Student'[student_key] ), CALCULATE ( [Incidents] ) >= 2 || CALCULATE ( [Incidents], 'Incidents'[action_taken] = "Suspension" ) >= 1 ) ), [Students] )
+		formatString: 0.0%
+		displayFolder: Early Warning
+		lineageTag: 52072c3b-75f9-4a8f-b064-8ec1a98db656
+
+	/// Share of students flagged on Course performance (an F or average below 55)
+	measure 'Course Flag Rate' = DIVIDE ( COUNTROWS ( FILTER ( ADDCOLUMNS ( VALUES ( 'Student'[student_key] ), "@f", CALCULATE ( COUNTROWS ( 'Enrollments' ), 'Enrollments'[final_grade] = "F" ), "@s", [Avg Exam Score] ), [@f] >= 1 || ( NOT ISBLANK ( [@s] ) && [@s] < 55 ) ) ), [Students] )
+		formatString: 0.0%
+		displayFolder: Early Warning
+		lineageTag: effb200c-2a4e-46ca-859a-cb44588f0afd
+
+	/// Students with at least one ABC flag
+	measure 'At-Risk Students' = COUNTROWS ( FILTER ( VALUES ( 'Student'[student_key] ), CALCULATE ( [Risk Flags] ) >= 1 ) )
+		formatString: #,0
+		displayFolder: Early Warning
+		lineageTag: bca8d976-491a-42b0-9656-0bd0e2ede3b1
+
+	/// Share of students with at least one ABC flag
+	measure 'At-Risk Rate' = DIVIDE ( [At-Risk Students], [Students] )
+		formatString: 0.0%
+		displayFolder: Early Warning
+		lineageTag: 815a5150-5a5e-4f0f-a2ac-de8e2eb73a96
+
+	/// Share of students with two or more ABC flags
+	measure 'High-Risk Rate' = DIVIDE ( COUNTROWS ( FILTER ( VALUES ( 'Student'[student_key] ), CALCULATE ( [Risk Flags] ) >= 2 ) ), [Students] )
+		formatString: 0.0%
+		displayFolder: Early Warning
+		lineageTag: f7855d0e-cdd4-4727-8a80-5ac1c1ebd2dd
+
+	/// Students with at least one support programme
+	measure 'Students in Programs' = DISTINCTCOUNT ( 'Interventions'[student_key] )
+		formatString: #,0
+		displayFolder: Support
+		lineageTag: c9940476-36a0-4c77-92a7-d68e1a291cd8
+
+	/// Share of students in a support programme
+	measure 'Program Reach' = DIVIDE ( [Students in Programs], [Students] )
+		formatString: 0.0%
+		displayFolder: Support
+		lineageTag: 2db0ed9c-2028-4519-b57d-5ddef1403bb0
+
+	/// Programme sessions attended divided by planned
+	measure 'Session Attendance Rate' = DIVIDE ( SUM ( 'Interventions'[sessions_attended] ), SUM ( 'Interventions'[sessions_planned] ) )
+		formatString: 0.0%
+		displayFolder: Support
+		lineageTag: 23a99ddb-0c11-4c92-8665-a7e34e2a701c
+
+	/// Total cost of support programmes
+	measure 'Program Cost' = SUM ( 'Interventions'[cost_usd] )
+		formatString: $#,0
+		displayFolder: Support
+		lineageTag: 6d2b6ed6-1741-4e7b-a7f8-c0eaed63981a
+
+	/// Programme cost per participating student
+	measure 'Cost per Participant' = DIVIDE ( [Program Cost], [Students in Programs] )
+		formatString: $#,0
+		displayFolder: Support
+		lineageTag: fb9cf6b0-6af6-40f4-90b2-27ba236ba43c
+
+	/// Year-over-year growth of programme participants minus non-participants
+	measure 'Program Growth Uplift' = VAR ps = CALCULATETABLE ( VALUES ( 'Interventions'[student_key] ) ) VAR g1 = CALCULATE ( [Score Change], TREATAS ( ps, 'Student'[student_key] ) ) VAR g0 = CALCULATE ( [Score Change], EXCEPT ( VALUES ( 'Student'[student_key] ), ps ) ) RETURN g1 - g0
+		formatString: +0.0;-0.0;0.0
+		displayFolder: Support
+		lineageTag: 2d481618-9bcc-4620-8a43-09f9a20c5060
+
+	/// Year-over-year growth of programme participants
+	measure 'Participants Score Change' = CALCULATE ( [Score Change], TREATAS ( VALUES ( 'Interventions'[student_key] ), 'Student'[student_key] ) )
+		formatString: +0.0;-0.0;0.0
+		displayFolder: Support
+		lineageTag: de555adf-161b-45d5-9c0c-89657e7ed8bb
+
+	/// Teachers at the selected schools
+	measure Teachers = CALCULATE ( COUNTROWS ( 'Teacher' ), TREATAS ( VALUES ( 'School'[school_key] ), 'Teacher'[school_key] ) )
+		formatString: #,0
+		displayFolder: Resources
+		lineageTag: 6842f507-027b-4a37-a1b9-33e88903023a
+
+	/// Student to teacher ratio
+	measure 'Students per Teacher' = DIVIDE ( [Students], [Teachers] )
+		formatString: 0.0
+		displayFolder: Resources
+		lineageTag: cc37ddf4-a588-4e92-a0da-50374049015b
+
+	/// Average number of enrolments per class
+	measure 'Avg Class Size' = AVERAGEX ( VALUES ( 'Class'[class_key] ), CALCULATE ( COUNTROWS ( 'Enrollments' ) ) )
+		formatString: 0.0
+		displayFolder: Resources
+		lineageTag: 98701df9-911e-455b-a3b7-a1e675c96360
+
+	/// Enrolments divided by class capacity
+	measure 'Class Fill Rate' = DIVIDE ( COUNTROWS ( 'Enrollments' ), SUMX ( VALUES ( 'Class'[class_key] ), CALCULATE ( MAX ( 'Class'[capacity] ) ) ) )
+		formatString: 0.0%
+		displayFolder: Resources
+		lineageTag: 2066a18c-4f64-48dc-81f8-e0fb4a4b3568
+
+	column x
+		dataType: string
+		isHidden
+		lineageTag: e719c4f0-327b-46c9-a1c2-e72b0d92f05a
+		isNameInferred
+		sourceColumn: [x]
+
+	partition Metrics = calculated
+		source = ROW ( "x", BLANK () )
+

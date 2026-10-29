@@ -1,0 +1,10 @@
+[
+ {"visual_type":"card","name":"card_part","x":20,"y":128,"width":235,"height":104,"title":"Students in Programs","fields":{"Values":"Metrics.Students in Programs"}},
+ {"visual_type":"card","name":"card_reach","x":271,"y":128,"width":235,"height":104,"title":"Program Reach","fields":{"Values":"Metrics.Program Reach"}},
+ {"visual_type":"card","name":"card_sessions","x":522,"y":128,"width":235,"height":104,"title":"Session Attendance Rate","fields":{"Values":"Metrics.Session Attendance Rate"}},
+ {"visual_type":"card","name":"card_cost","x":773,"y":128,"width":235,"height":104,"title":"Program Cost","fields":{"Values":"Metrics.Program Cost"}},
+ {"visual_type":"card","name":"card_costpp","x":1024,"y":128,"width":236,"height":104,"title":"Cost per Participant","fields":{"Values":"Metrics.Cost per Participant"}},
+ {"visual_type":"barChart","name":"participants_by_program","x":20,"y":248,"width":402,"height":452,"title":"Participants by programme","fields":{"Category":"Interventions.intervention_type","Y":"Metrics.Students in Programs"}},
+ {"visual_type":"barChart","name":"sessions_by_program","x":438,"y":248,"width":402,"height":452,"title":"Session attendance by programme","fields":{"Category":"Interventions.intervention_type","Y":"Metrics.Session Attendance Rate"}},
+ {"visual_type":"barChart","name":"uplift_by_program","x":856,"y":248,"width":404,"height":452,"title":"Score growth vs non-participants","fields":{"Category":"Interventions.intervention_type","Y":"Metrics.Program Growth Uplift"}}
+]

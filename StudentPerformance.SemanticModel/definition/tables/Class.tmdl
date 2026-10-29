@@ -1,0 +1,81 @@
+/// Source: data\model\dim_class.csv
+table Class
+	lineageTag: d8704e04-3e5e-4ea6-ba13-cd48d3b4f33f
+
+	column class_key
+		dataType: int64
+		isHidden
+		isKey
+		lineageTag: 9cba55c6-6e88-48ca-808b-620d75e62933
+		summarizeBy: none
+		sourceColumn: class_key
+
+	column class_code
+		dataType: string
+		lineageTag: 27491728-2532-4695-acac-c7f90dcb06d6
+		sourceColumn: class_code
+
+	column school_key
+		dataType: int64
+		isHidden
+		lineageTag: bd91f890-b92a-47b4-b9fd-730795a0ec86
+		summarizeBy: none
+		sourceColumn: school_key
+
+	column subject_key
+		dataType: int64
+		isHidden
+		lineageTag: 7c8acd26-24ab-437f-b21f-826137ed8b79
+		summarizeBy: none
+		sourceColumn: subject_key
+
+	column term_key
+		dataType: int64
+		isHidden
+		lineageTag: 4900adb6-04ed-47e4-bf8e-8e3377beaed4
+		summarizeBy: none
+		sourceColumn: term_key
+
+	column teacher_key
+		dataType: int64
+		isHidden
+		lineageTag: b411c82d-fb0f-4d73-8b01-6f3c0d05e682
+		summarizeBy: none
+		sourceColumn: teacher_key
+
+	column section
+		dataType: int64
+		lineageTag: b457d37b-e3e7-4801-969b-68c2e77e120d
+		summarizeBy: none
+		sourceColumn: section
+
+	column room
+		dataType: string
+		lineageTag: 96de4009-7994-4559-b834-0622c0254bd6
+		sourceColumn: room
+
+	column capacity
+		dataType: int64
+		lineageTag: d22bbdca-837e-4305-943b-aa226643708b
+		summarizeBy: none
+		sourceColumn: capacity
+
+	column schedule_slot
+		dataType: string
+		lineageTag: 8b8d82dd-e555-4bd3-b9af-9430d9ae2295
+		sourceColumn: schedule_slot
+
+	partition Class = m
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "dim_class.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    Blanks = Table.ReplaceValue(Promoted, "", null, Replacer.ReplaceValue, Table.ColumnNames(Promoted)),
+				    Typed = Table.TransformColumnTypes(Blanks, {{"class_key", Int64.Type}, {"class_code", type text}, {"school_key", Int64.Type}, {"subject_key", Int64.Type}, {"term_key", Int64.Type}, {"teacher_key", Int64.Type}, {"section", Int64.Type}, {"room", type text}, {"capacity", Int64.Type}, {"schedule_slot", type text}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

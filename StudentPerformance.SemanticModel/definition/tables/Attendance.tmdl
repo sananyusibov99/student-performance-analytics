@@ -1,0 +1,59 @@
+/// Source: data\model\fact_attendance.csv
+table Attendance
+	lineageTag: d77afa11-9787-4f1d-94b9-8d15281014b5
+
+	column student_key
+		dataType: int64
+		isHidden
+		lineageTag: 4f3482d6-fb67-43a6-b5bd-163f69d41120
+		summarizeBy: none
+		sourceColumn: student_key
+
+	column date_key
+		dataType: int64
+		isHidden
+		lineageTag: fe8c93c0-5c67-4cb9-943b-bf5963f8973f
+		summarizeBy: none
+		sourceColumn: date_key
+
+	column school_key
+		dataType: int64
+		isHidden
+		lineageTag: a4fb722e-97d3-435f-8748-ada2ce3f34fe
+		summarizeBy: none
+		sourceColumn: school_key
+
+	column status
+		dataType: string
+		lineageTag: 495bc64a-8f06-4de9-b0e7-7d79cff0c684
+		sourceColumn: status
+		sortByColumn: 'status Order'
+
+	column minutes_late
+		dataType: int64
+		lineageTag: 399f5158-4124-4039-b003-5f9406a2d612
+		summarizeBy: none
+		sourceColumn: minutes_late
+
+	column 'status Order'
+		dataType: int64
+		isHidden
+		lineageTag: 9a08af8d-01ad-46a5-9238-729832b6bcd4
+		summarizeBy: none
+		sourceColumn: status Order
+
+	partition Attendance = m
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "fact_attendance.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    Blanks = Table.ReplaceValue(Promoted, "", null, Replacer.ReplaceValue, Table.ColumnNames(Promoted)),
+				    Typed = Table.TransformColumnTypes(Blanks, {{"student_key", Int64.Type}, {"date_key", Int64.Type}, {"school_key", Int64.Type}, {"status", type text}, {"minutes_late", Int64.Type}}, "en-US"),
+				    Ord1 = Table.AddColumn(Typed, "status Order", each List.PositionOf({"Present", "Late", "Excused", "Absent"}, [status]) + 1, Int64.Type)
+				in
+				    Ord1
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

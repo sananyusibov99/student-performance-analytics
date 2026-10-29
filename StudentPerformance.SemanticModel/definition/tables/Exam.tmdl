@@ -1,0 +1,105 @@
+/// Source: data\model\dim_exam.csv
+table Exam
+	lineageTag: a5fb53d5-1e90-4ec0-9d64-fccec2917d3b
+
+	column exam_key
+		dataType: int64
+		isHidden
+		isKey
+		lineageTag: 2bffa3d9-82ce-4821-bab0-8e2824362975
+		summarizeBy: none
+		sourceColumn: exam_key
+
+	column subject_key
+		dataType: int64
+		isHidden
+		lineageTag: fbc743ef-dfef-42aa-9ff5-eaaa2fdc6bb9
+		summarizeBy: none
+		sourceColumn: subject_key
+
+	column term_key
+		dataType: int64
+		isHidden
+		lineageTag: c363bf90-9f3b-4f95-a0f8-400559ac930a
+		summarizeBy: none
+		sourceColumn: term_key
+
+	column exam_type
+		dataType: string
+		lineageTag: a55b724d-ea41-4e80-893c-f53c2f8a6818
+		sourceColumn: exam_type
+		sortByColumn: 'exam_type Order'
+
+	column exam_date_key
+		dataType: int64
+		isHidden
+		lineageTag: be8c4e0f-855f-4cd5-9bdb-901381e16fff
+		summarizeBy: none
+		sourceColumn: exam_date_key
+
+	column difficulty
+		dataType: string
+		lineageTag: 6747405c-6af2-42be-9fb7-72a3be44475f
+		sourceColumn: difficulty
+		sortByColumn: 'difficulty Order'
+
+	column max_score
+		dataType: int64
+		lineageTag: 34232363-f86a-45eb-b490-b52c8066c69c
+		summarizeBy: none
+		sourceColumn: max_score
+
+	column pass_mark
+		dataType: int64
+		lineageTag: 932e5648-5064-4173-b136-6b7f79d84452
+		summarizeBy: none
+		sourceColumn: pass_mark
+
+	column question_count
+		dataType: int64
+		lineageTag: 35a9ff57-393a-4d30-a1f3-0d4874891a11
+		summarizeBy: none
+		sourceColumn: question_count
+
+	column duration_min
+		dataType: int64
+		lineageTag: 84f600b9-5afc-446a-a1ce-fcaaf9491c14
+		summarizeBy: none
+		sourceColumn: duration_min
+
+	column weight_in_term
+		dataType: double
+		lineageTag: ad56001a-7635-42f2-b73d-0576f9fa0c3b
+		summarizeBy: none
+		sourceColumn: weight_in_term
+
+	column 'difficulty Order'
+		dataType: int64
+		isHidden
+		lineageTag: 1b384509-6cce-42f2-9637-5e9cd47aabb3
+		summarizeBy: none
+		sourceColumn: difficulty Order
+
+	column 'exam_type Order'
+		dataType: int64
+		isHidden
+		lineageTag: dd85d272-2cb7-4b33-98c8-572280d2ea82
+		summarizeBy: none
+		sourceColumn: exam_type Order
+
+	partition Exam = m
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "dim_exam.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    Blanks = Table.ReplaceValue(Promoted, "", null, Replacer.ReplaceValue, Table.ColumnNames(Promoted)),
+				    Typed = Table.TransformColumnTypes(Blanks, {{"exam_key", Int64.Type}, {"subject_key", Int64.Type}, {"term_key", Int64.Type}, {"exam_type", type text}, {"exam_date_key", Int64.Type}, {"difficulty", type text}, {"max_score", Int64.Type}, {"pass_mark", Int64.Type}, {"question_count", Int64.Type}, {"duration_min", Int64.Type}, {"weight_in_term", type number}}, "en-US"),
+				    Ord1 = Table.AddColumn(Typed, "difficulty Order", each List.PositionOf({"Easy", "Medium", "Hard"}, [difficulty]) + 1, Int64.Type),
+				    Ord2 = Table.AddColumn(Ord1, "exam_type Order", each List.PositionOf({"Midterm", "Final"}, [exam_type]) + 1, Int64.Type)
+				in
+				    Ord2
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

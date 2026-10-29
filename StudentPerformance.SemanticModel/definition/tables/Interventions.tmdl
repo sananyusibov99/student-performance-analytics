@@ -1,0 +1,74 @@
+/// Source: data\model\fact_intervention.csv
+table Interventions
+	lineageTag: 37cdde1d-25f2-4e1d-a41d-cbb1f128d5e2
+
+	column intervention_key
+		dataType: int64
+		isHidden
+		lineageTag: 1ba72f6e-d614-43bf-8160-3f77c5d287a5
+		summarizeBy: none
+		sourceColumn: intervention_key
+
+	column student_key
+		dataType: int64
+		isHidden
+		lineageTag: be857b00-73da-4158-8d64-4b94308ccb60
+		summarizeBy: none
+		sourceColumn: student_key
+
+	column intervention_type
+		dataType: string
+		lineageTag: f0f89498-94fe-447b-8ddb-1b62cf86174a
+		sourceColumn: intervention_type
+
+	column provider
+		dataType: string
+		lineageTag: 34cfead9-61a9-4731-9cbc-bd437b16fd41
+		sourceColumn: provider
+
+	column start_date_key
+		dataType: int64
+		isHidden
+		lineageTag: 5758c442-ace4-41c5-bca3-dd8629c1e580
+		summarizeBy: none
+		sourceColumn: start_date_key
+
+	column end_date_key
+		dataType: int64
+		isHidden
+		lineageTag: 856d9c8f-c0e0-44c5-afd4-59f9a8745016
+		summarizeBy: none
+		sourceColumn: end_date_key
+
+	column sessions_planned
+		dataType: int64
+		lineageTag: 1504f344-b024-49d2-b7cc-f3da00677378
+		summarizeBy: none
+		sourceColumn: sessions_planned
+
+	column sessions_attended
+		dataType: int64
+		lineageTag: acf88c59-d34a-4162-8f2c-af666a43db12
+		summarizeBy: none
+		sourceColumn: sessions_attended
+
+	column cost_usd
+		dataType: double
+		lineageTag: 47da3164-0c34-4f05-a62e-89ade870e9bc
+		summarizeBy: none
+		sourceColumn: cost_usd
+
+	partition Interventions = m
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "fact_intervention.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    Blanks = Table.ReplaceValue(Promoted, "", null, Replacer.ReplaceValue, Table.ColumnNames(Promoted)),
+				    Typed = Table.TransformColumnTypes(Blanks, {{"intervention_key", Int64.Type}, {"student_key", Int64.Type}, {"intervention_type", type text}, {"provider", type text}, {"start_date_key", Int64.Type}, {"end_date_key", Int64.Type}, {"sessions_planned", Int64.Type}, {"sessions_attended", Int64.Type}, {"cost_usd", type number}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

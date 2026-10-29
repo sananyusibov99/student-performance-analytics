@@ -1,0 +1,70 @@
+{
+ "students": 20000,
+ "seed": 42,
+
+ "school_size": {"High School": 800, "Undergraduate": 2200},
+ "section_size": 26,
+ "sections_per_teacher_per_term": 5,
+ "assignments_per_class": 6,
+
+ "subjects": [
+  {"name": "Mathematics",       "department": "STEM",       "credits": 5, "core": true,  "offset": -3.0},
+  {"name": "English",           "department": "Languages",  "credits": 4, "core": true,  "offset": 2.5},
+  {"name": "Physics",           "department": "STEM",       "credits": 4, "core": true,  "offset": -2.0},
+  {"name": "Chemistry",         "department": "STEM",       "credits": 4, "core": false, "offset": -1.0},
+  {"name": "Biology",           "department": "STEM",       "credits": 4, "core": false, "offset": 1.0},
+  {"name": "History",           "department": "Humanities", "credits": 3, "core": false, "offset": 1.5},
+  {"name": "Computer Science",  "department": "STEM",       "credits": 3, "core": false, "offset": 0.5},
+  {"name": "Art",               "department": "Arts",       "credits": 2, "core": false, "offset": 4.0},
+  {"name": "Physical Education","department": "Wellness",   "credits": 2, "core": false, "offset": 6.0}
+ ],
+ "subjects_per_student": 7,
+
+ "calibration": {
+  "attendance":    {"mean": 0.935, "sd": 0.055},
+  "completion":    {"mean": 0.86,  "sd": 0.09},
+  "stress":        {"mean": 6.0,   "sd": 2.1},
+  "anxiety":       {"mean": 5.4,   "sd": 2.0}
+ },
+
+ "effects": {
+  "score_shift": -2.0,
+  "mentoring_rate": 0.06,
+  "counseling_rate": 0.40,
+  "school_sd": 2.0,
+  "school_per_1000_budget": 0.25,
+  "teacher_sd": 2.5,
+  "teacher_per_experience_year": 0.15,
+  "teacher_experience_cap": 15,
+  "noise_sd": 5.0,
+  "programs": {
+   "Private tuition": 3.0,
+   "Remedial class": 4.0,
+   "Peer mentoring": 1.5,
+   "Counseling": 1.0
+  },
+  "remedial_threshold": 50
+ },
+
+ "seasonality": {
+  "month_attendance": {"9": 1.01, "10": 1.0, "11": 1.0, "12": 0.975, "1": 0.995, "2": 1.0, "3": 1.0, "4": 1.0, "5": 0.97},
+  "weekday_attendance": {"1": 0.985, "2": 1.005, "3": 1.01, "4": 1.005, "5": 0.975},
+  "lms_exam_week_factor": 1.6
+ },
+
+ "targets": {
+  "Students per Teacher":   [14, 20],
+  "Avg Class Size":         [20, 30],
+  "Attendance Rate":        [0.91, 0.95],
+  "Chronic Absentee Rate":  [0.18, 0.32],
+  "Completion Rate":        [0.80, 0.90],
+  "On-time Rate":           [0.80, 0.92],
+  "Exam Pass Rate":         [0.72, 0.86],
+  "Course Withdrawal Rate": [0.015, 0.05],
+  "Incidents per 100":      [30, 80],
+  "Program Reach":          [0.25, 0.50],
+  "High Stress Share":      [0.20, 0.40],
+  "Teacher VA recovery r":  [0.5, 1.0],
+  "Program effects recovered": [4, 4]
+ }
+}

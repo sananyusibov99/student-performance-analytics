@@ -1,0 +1,68 @@
+/// Source: data\model\fact_lms_activity.csv
+table 'LMS Activity'
+	lineageTag: 6e2d5a32-2429-4c92-b20b-9f3e06ca32f9
+
+	column student_key
+		dataType: int64
+		isHidden
+		lineageTag: 1091d15b-9207-41b2-b676-1a79fc3d49a6
+		summarizeBy: none
+		sourceColumn: student_key
+
+	column week_start_date_key
+		dataType: int64
+		isHidden
+		lineageTag: 0669fde6-bbc2-4ba5-85ac-2f356d427b22
+		summarizeBy: none
+		sourceColumn: week_start_date_key
+
+	column logins
+		dataType: int64
+		lineageTag: d07b1bfd-411b-4d9e-a9d2-e1f70529ea14
+		summarizeBy: none
+		sourceColumn: logins
+
+	column online_learning_min
+		dataType: int64
+		lineageTag: 13d861d2-41a9-4440-8698-254b5400ecf6
+		summarizeBy: none
+		sourceColumn: online_learning_min
+
+	column online_course_min
+		dataType: int64
+		lineageTag: 3709e608-85e7-4fa1-94eb-f3de45412dab
+		summarizeBy: none
+		sourceColumn: online_course_min
+
+	column edu_app_min
+		dataType: int64
+		lineageTag: e8f6e337-bc43-43e8-bb4b-4261d29d8d84
+		summarizeBy: none
+		sourceColumn: edu_app_min
+
+	column videos_watched
+		dataType: int64
+		lineageTag: c1f850c6-1684-4bab-8e4e-3e936c9ca92c
+		summarizeBy: none
+		sourceColumn: videos_watched
+
+	column forum_posts
+		dataType: int64
+		lineageTag: cf03de8b-6b90-4c40-91bf-aa3855571134
+		summarizeBy: none
+		sourceColumn: forum_posts
+
+	partition 'LMS Activity' = m
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "fact_lms_activity.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    Blanks = Table.ReplaceValue(Promoted, "", null, Replacer.ReplaceValue, Table.ColumnNames(Promoted)),
+				    Typed = Table.TransformColumnTypes(Blanks, {{"student_key", Int64.Type}, {"week_start_date_key", Int64.Type}, {"logins", Int64.Type}, {"online_learning_min", Int64.Type}, {"online_course_min", Int64.Type}, {"edu_app_min", Int64.Type}, {"videos_watched", Int64.Type}, {"forum_posts", Int64.Type}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

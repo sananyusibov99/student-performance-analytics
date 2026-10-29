@@ -1,0 +1,10 @@
+[
+ {"visual_type":"card","name":"card_att","x":20,"y":128,"width":235,"height":104,"title":"Attendance Rate","fields":{"Values":"Metrics.Attendance Rate"}},
+ {"visual_type":"card","name":"card_chronic","x":271,"y":128,"width":235,"height":104,"title":"Chronic Absentee Rate","fields":{"Values":"Metrics.Chronic Absentee Rate"}},
+ {"visual_type":"card","name":"card_late","x":522,"y":128,"width":235,"height":104,"title":"Late Rate","fields":{"Values":"Metrics.Late Rate"}},
+ {"visual_type":"card","name":"card_completion","x":773,"y":128,"width":235,"height":104,"title":"Completion Rate","fields":{"Values":"Metrics.Completion Rate"}},
+ {"visual_type":"card","name":"card_ontime","x":1024,"y":128,"width":236,"height":104,"title":"On-time Rate","fields":{"Values":"Metrics.On-time Rate"}},
+ {"visual_type":"lineChart","name":"attendance_by_month","x":20,"y":248,"width":610,"height":452,"title":"Attendance rate by month","fields":{"Category":"Date.Year Month","Y":"Metrics.Attendance Rate"}},
+ {"visual_type":"barChart","name":"completion_by_assignment_type","x":646,"y":248,"width":297,"height":452,"title":"Assignment completion by type","fields":{"Category":"Assignment.assignment_type","Y":"Metrics.Completion Rate"}},
+ {"visual_type":"barChart","name":"chronic_by_income","x":959,"y":248,"width":301,"height":452,"title":"Chronic absenteeism by family income","fields":{"Category":"Student.family_income","Y":"Metrics.Chronic Absentee Rate"}}
+]

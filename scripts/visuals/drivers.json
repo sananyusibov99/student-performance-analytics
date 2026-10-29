@@ -1,0 +1,8 @@
+[
+ {"visual_type":"columnChart","name":"score_by_study_hours","x":20,"y":128,"width":402,"height":278,"title":"Study hours per day: +22 pts from <1 h to 6+ h","fields":{"Category":"Students.Study Hours Band","Y":"Metrics.Avg Exam Score"}},
+ {"visual_type":"columnChart","name":"score_by_self_study","x":438,"y":128,"width":402,"height":278,"title":"Self-study hours per day","fields":{"Category":"Students.Self Study Band","Y":"Metrics.Avg Exam Score"}},
+ {"visual_type":"columnChart","name":"score_by_practice_tests","x":856,"y":128,"width":404,"height":278,"title":"Practice tests completed","fields":{"Category":"Students.Practice Tests Band","Y":"Metrics.Avg Exam Score"}},
+ {"visual_type":"columnChart","name":"score_by_sleep","x":20,"y":422,"width":402,"height":278,"title":"Sleep hours: more sleep, higher score","fields":{"Category":"Students.Sleep Band","Y":"Metrics.Avg Exam Score"}},
+ {"visual_type":"lineChart","name":"score_by_stress","x":438,"y":422,"width":402,"height":278,"title":"Stress level: score falls from 76 to 60","fields":{"Category":"Students.stress_level","Y":"Metrics.Avg Exam Score"}},
+ {"visual_type":"columnChart","name":"score_by_previous_score","x":856,"y":422,"width":404,"height":278,"title":"Previous exam score: the strongest predictor","fields":{"Category":"Students.Previous Score Band","Y":"Metrics.Avg Exam Score"}}
+]

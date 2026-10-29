@@ -1,0 +1,78 @@
+/// Source: data\model\fact_assignment_submission.csv
+table Submissions
+	lineageTag: 51492567-4abb-4fd7-a216-037486ee3d62
+
+	column submission_key
+		dataType: int64
+		isHidden
+		lineageTag: 0a5e846f-12ac-408f-a89f-1df4c48dac0a
+		summarizeBy: none
+		sourceColumn: submission_key
+
+	column assignment_key
+		dataType: int64
+		isHidden
+		lineageTag: 5148a1d6-6891-40b0-91b2-016c79c1032a
+		summarizeBy: none
+		sourceColumn: assignment_key
+
+	column student_key
+		dataType: int64
+		isHidden
+		lineageTag: 906d5501-4d8a-414b-8156-9abb310c4ac7
+		summarizeBy: none
+		sourceColumn: student_key
+
+	column submitted_date_key
+		dataType: int64
+		isHidden
+		lineageTag: 6292cd85-bef5-4e81-bbb0-d155ccfb326b
+		summarizeBy: none
+		sourceColumn: submitted_date_key
+
+	column status
+		dataType: string
+		lineageTag: 09bd58c3-d4b5-4555-a1c1-c324190a578d
+		sourceColumn: status
+		sortByColumn: 'status Order'
+
+	column days_late
+		dataType: int64
+		lineageTag: feed7bec-de5d-4bda-95c5-058902b4bfd7
+		summarizeBy: none
+		sourceColumn: days_late
+
+	column points_earned
+		dataType: double
+		lineageTag: 5c58825e-3aa1-4fd6-926c-2deeb0bd40d7
+		summarizeBy: none
+		sourceColumn: points_earned
+
+	column max_points
+		dataType: int64
+		lineageTag: 65afbd81-9166-4c2c-af36-db5c178b94e5
+		summarizeBy: none
+		sourceColumn: max_points
+
+	column 'status Order'
+		dataType: int64
+		isHidden
+		lineageTag: 3c148c66-940c-497b-a17f-27bab9bc446b
+		summarizeBy: none
+		sourceColumn: status Order
+
+	partition Submissions = m
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "fact_assignment_submission.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    Blanks = Table.ReplaceValue(Promoted, "", null, Replacer.ReplaceValue, Table.ColumnNames(Promoted)),
+				    Typed = Table.TransformColumnTypes(Blanks, {{"submission_key", Int64.Type}, {"assignment_key", Int64.Type}, {"student_key", Int64.Type}, {"submitted_date_key", Int64.Type}, {"status", type text}, {"days_late", Int64.Type}, {"points_earned", type number}, {"max_points", Int64.Type}}, "en-US"),
+				    Ord1 = Table.AddColumn(Typed, "status Order", each List.PositionOf({"On time", "Late", "Missing"}, [status]) + 1, Int64.Type)
+				in
+				    Ord1
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+
